@@ -1,0 +1,4 @@
+var searchModuleIndex = ["vgura",];
+var searchIndex = ["ParseError","new_parse_error","GuraParser","Parser","assert_end","split_char_ranges","char","keyword",];
+var searchModuleData = [["<div align=\"center\">","vgura.html"],];
+var searchData = [["vgura","","vgura.html#ParseError","struct "],["vgura","","vgura.html#new_parse_error","fn "],["vgura"," Base parser ","vgura.html#GuraParser","struct "],["vgura","","vgura.html#Parser","type "],["vgura"," assert_end returns if the parser has reached the end of file ","vgura.html#Parser.assert_end","fn (Parser)"],["vgura"," split_char_ranges returns a list of chars from a list of chars which could cont","vgura.html#Parser.split_char_ranges","fn (Parser)"],["vgura"," char matches a list of specific chars and returns the first that matched ","vgura.html#Parser.char","fn (Parser)"],["vgura"," keyword matches specific keywords ","vgura.html#Parser.keyword","fn (Parser)"],];
