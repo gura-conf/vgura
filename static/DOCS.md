@@ -8,14 +8,6 @@
 
 </div>
 
-<div align="center">
-
-[![Build Status][workflowbadge]][workflowurl]
-[![Docs Validation][validatedocsbadge]][validatedocsurl]
-[![License: MIT][licensebadge]][licenseurl]
-
-</div>
-
 [workflowbadge]: https://github.com/jware-solution/vgura/workflows/Build%20and%20Test%20with%20deps/badge.svg
 [validatedocsbadge]: https://github.com/jware-solution/vgura/workflows/Validate%20Docs/badge.svg
 [licensebadge]: https://img.shields.io/badge/License-MIT-blue.svg

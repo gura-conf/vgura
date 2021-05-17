@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+find . -name "*.v" -exec v fmt -w {} +

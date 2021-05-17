@@ -1,0 +1,36 @@
+name: Deploy Docs
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Latest V
+      uses: actions/checkout@v2
+      with:
+        repository: vlang/v
+    - name: Checkout vgura
+      uses: actions/checkout@v2
+      with:
+        path: vgura
+    - name: Build V
+      run: |
+        make
+        sudo ./v symlink
+    - name: V doctor
+      run: v doctor
+    - name: Build docs
+      run: |
+        rm -f ./vgura/README.md
+        mv ./vgura/static/DOCS.md ./vgura/README.md
+        v doc -m -f html vgura/
+        mv ./vgura/_docs/vgura.html ./vgura/_docs/index.html
+    - name: Deploy to gh-pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./vgura/_docs/
