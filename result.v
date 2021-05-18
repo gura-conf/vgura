@@ -34,14 +34,14 @@ pub enum MatchResultType {
 // MatchResult
 pub struct MatchResult {
 	result_type MatchResultType
-	value       ?Any = none
+	value       &Any = 0
 }
 
 // new_match_result_with_value returns a result with value
-pub fn new_match_result_with_value(result_type MatchResultType, value Any) MatchResult {
+pub fn new_match_result_with_value(result_type MatchResultType, value &Any) MatchResult {
 	return MatchResult{
 		result_type: result_type
-		value: value
+		value: unsafe { value }
 	}
 }
 

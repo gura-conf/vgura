@@ -3,12 +3,12 @@ module vgura
 import math.util
 
 // Base parser
-pub struct GuraParser {
+pub struct Parser {
 mut:
-	cache map[string]string
+	cache map[string][]string
 	len   int
 	line  int
-	post  int
+	pos   int
 	text  string
 }
 
@@ -20,27 +20,27 @@ pub fn (p Parser) assert_end() bool {
 }
 
 // split_char_ranges returns a list of chars from a list of chars which could contain char ranges (i.e. a-z or 0-9)
-pub fn (mut p Parser) split_char_ranges(chars string) ?string {
+pub fn (mut p Parser) split_char_ranges(chars string) ?[]string {
 	if chars in p.cache {
 		return p.cache[chars]
 	}
 
-	mut result := ''
+	mut result := []string{}
 	mut idx := 0
 	mut len := chars.len
 
 	for idx < len {
-		if idx + 2 < len && chars[idx + 1] == '-' {
+		if idx + 2 < len && chars[idx + 1] == `-` {
 			if chars[idx] >= chars[idx + 2] {
 				return error('Bad character error')
 			}
 
-			result = '$result${chars[idx..idx + 3]}'
+			result << chars[idx..idx + 3]
 			idx += 3
 			continue
 		}
 
-		result = '$result${chars[idx]}'
+		result << chars[idx].str()
 		idx += 1
 	}
 
@@ -49,26 +49,28 @@ pub fn (mut p Parser) split_char_ranges(chars string) ?string {
 }
 
 // char matches a list of specific chars and returns the first that matched
-pub fn (mut p Parser) char(maybe_chars ?string) ?string {
+pub fn (mut p Parser) char(chars string) ?string {
 	if p.assert_end() {
-		if chars := maybe_chars {
+		if chars != '' {
 			return new_parse_error(p.pos + 1, p.line, 'Expected [$chars] but got end of string')
 		}
 		return new_parse_error(p.pos + 1, p.line, 'Expected character but got end of string')
 	}
 
-	next_char := p.text[p.pos + 1]
+	next_char := p.text[p.pos + 1].str()
 
-	if chars := maybe_chars {
-		for char_range in p.split_char_ranges(chars) {
-			if char_range.len == 1 {
-				if next_char == char_range {
+	if chars != '' {
+		if split := p.split_char_ranges(chars) {
+			for char_range in split {
+				if char_range.len == 1 {
+					if next_char == char_range {
+						p.pos += 1
+						return next_char
+					}
+				} else if char_range[0].str() <= next_char && next_char <= char_range[2].str() {
 					p.pos += 1
 					return next_char
 				}
-			} else if char_range[0] <= next_char && next_char <= char_range[2] {
-				p.pos += 1
-				return next_char
 			}
 		}
 
@@ -101,8 +103,8 @@ pub fn (mut p Parser) keyword(keywords ...string) ?string {
 
 pub fn (mut p Parser) maybe_match(rules ...Rule) ?Any {
 	mut last_error_pos := -1
-	mut last_error := none
-	mut last_error_rules := []string{}
+	mut last_error := error('')
+	mut last_error_rules := []Rule{}
 
 	for rule in rules {
 		init_pos := p.pos
@@ -113,7 +115,7 @@ pub fn (mut p Parser) maybe_match(rules ...Rule) ?Any {
 			p.pos = init_pos
 			if err is ParseError {
 				if err.pos > last_error_pos {
-					last_error = ex
+					last_error = err
 					last_error_pos = err.pos
 					last_error_rules = [rule]
 				} else {
@@ -130,5 +132,5 @@ pub fn (mut p Parser) maybe_match(rules ...Rule) ?Any {
 	}
 
 	last_error_pos = util.imin(p.text.len - 1, last_error_pos)
-	return new_parse_error(last_error_pos, p.line, 'Expected ${last_error_rules.join(',')} but got ${p.text[last_error_pos]}')
+	return new_parse_error(last_error_pos, p.line, 'Expected $last_error_rules.str() but got ${p.text[last_error_pos]}')
 }
