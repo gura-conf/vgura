@@ -1,5 +1,7 @@
 module vgura
 
+import math.util
+
 // Base parser
 pub struct GuraParser {
 mut:
@@ -10,13 +12,15 @@ mut:
 	text  string
 }
 
+pub type Rule = fn (mut p Parser) ?Any
+
 // assert_end returns if the parser has reached the end of file
 pub fn (p Parser) assert_end() bool {
 	return p.pos >= p.len
 }
 
 // split_char_ranges returns a list of chars from a list of chars which could contain char ranges (i.e. a-z or 0-9)
-pub fn (p Parser) split_char_ranges(chars string) ?string {
+pub fn (mut p Parser) split_char_ranges(chars string) ?string {
 	if chars in p.cache {
 		return p.cache[chars]
 	}
@@ -45,7 +49,7 @@ pub fn (p Parser) split_char_ranges(chars string) ?string {
 }
 
 // char matches a list of specific chars and returns the first that matched
-pub fn (p Parser) char(maybe_chars ?string) ?string {
+pub fn (mut p Parser) char(maybe_chars ?string) ?string {
 	if p.assert_end() {
 		if chars := maybe_chars {
 			return new_parse_error(p.pos + 1, p.line, 'Expected [$chars] but got end of string')
@@ -76,7 +80,7 @@ pub fn (p Parser) char(maybe_chars ?string) ?string {
 }
 
 // keyword matches specific keywords
-pub fn (p Parser) keyword(keywords ...string) ?string {
+pub fn (mut p Parser) keyword(keywords ...string) ?string {
 	if p.assert_end() {
 		return new_parse_error(p.pos + 1, p.line, 'Expected ${keywords.join(',')} but got end of string')
 	}
@@ -93,4 +97,38 @@ pub fn (p Parser) keyword(keywords ...string) ?string {
 
 	return new_parse_error(p.pos + 1, p.line, 'Expected ${keywords.join(',')} but got ${p.text[
 		p.pos + 1]}')
+}
+
+pub fn (mut p Parser) maybe_match(rules ...Rule) ?Any {
+	mut last_error_pos := -1
+	mut last_error := none
+	mut last_error_rules := []string{}
+
+	for rule in rules {
+		init_pos := p.pos
+
+		if res := rule(mut p) {
+			return res
+		} else {
+			p.pos = init_pos
+			if err is ParseError {
+				if err.pos > last_error_pos {
+					last_error = ex
+					last_error_pos = err.pos
+					last_error_rules = [rule]
+				} else {
+					if err.pos == last_error_pos {
+						last_error_rules << rule
+					}
+				}
+			}
+		}
+	}
+
+	if last_error_rules.len == 1 {
+		return last_error
+	}
+
+	last_error_pos = util.imin(p.text.len - 1, last_error_pos)
+	return new_parse_error(last_error_pos, p.line, 'Expected ${last_error_rules.join(',')} but got ${p.text[last_error_pos]}')
 }
