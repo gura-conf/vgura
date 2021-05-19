@@ -60,31 +60,13 @@
 
 </section>
 
-						<section id="Constants" class="doc-node const">
-							<div class="title"><h2>Constants <a href="#Constants">#</a></h2></div>
-
-</section>
-						<section id="" class="doc-node const">
-<pre class="signature"><code><span class="token keyword">const</span> <span class="token punctuation">(</span>
-	basic_numbers_chars     <span class="token operator">=</span> <span class="token string">'0-9'</span>
-	hex_oct_bin             <span class="token operator">=</span> <span class="token string">'A-Fa-fxob'</span>
-
-	inf_and_nan             <span class="token operator">=</span> <span class="token string">'in'</span>
-
-	acceptable_number_chars <span class="token operator">=</span><span class="token string">''</span>$2basic_numbers_chars$hex_oct_bin${inf_and_nan}Ee+._-'
-
-	key_acceptable_chars    = '0-9A-Za-z_-'
-)</code></pre>
-
-
-</section>
 						<section id="new_match_result" class="doc-node">
-							<div class="title"><h2>fn new_match_result <a href="#new_match_result">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/jware-solutions/vgura/blob/master/vgura/result.v#L49"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token function">new_match_result</span><span class="token punctuation">(</span>result_type MatchResultType<span class="token punctuation">)</span> MatchResult</code></pre>
+							<div class="title"><h2>fn new_match_result <a href="#new_match_result">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/jware-solutions/vgura/blob/master/vgura/result.v#L62"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token function">new_match_result</span><span class="token punctuation">(</span>result_type MatchResultType<span class="token punctuation">)</span> MatchResult</code></pre>
 <p>new_match_result returns a result without value</p>
 
 </section>
 						<section id="new_match_result_with_value" class="doc-node">
-							<div class="title"><h2>fn new_match_result_with_value <a href="#new_match_result_with_value">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/jware-solutions/vgura/blob/master/vgura/result.v#L41"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token function">new_match_result_with_value</span><span class="token punctuation">(</span>result_type MatchResultType<span class="token punctuation">,</span> value <span class="token operator">&</span>Any<span class="token punctuation">)</span> MatchResult</code></pre>
+							<div class="title"><h2>fn new_match_result_with_value <a href="#new_match_result_with_value">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/jware-solutions/vgura/blob/master/vgura/result.v#L54"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token function">new_match_result_with_value</span><span class="token punctuation">(</span>result_type MatchResultType<span class="token punctuation">,</span> value <span class="token operator">&</span>Any<span class="token punctuation">)</span> MatchResult</code></pre>
 <p>new_match_result_with_value returns a result with value</p>
 
 </section>
@@ -94,9 +76,18 @@
 
 </section>
 						<section id="Any" class="doc-node">
-							<div class="title"><h2>type Any <a href="#Any">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/jware-solutions/vgura/blob/master/vgura/result.v#L16"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">type</span> Any <span class="token operator">=</span> Null <span class="token operator">|</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>Any <span class="token operator">|</span> <span class="token builtin">bool</span> <span class="token operator">|</span> <span class="token builtin">f32</span> <span class="token operator">|</span> <span class="token builtin">f64</span> <span class="token operator">|</span> <span class="token builtin">i64</span> <span class="token operator">|</span> <span class="token builtin">int</span> <span class="token operator">|</span> <span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span>Any <span class="token operator">|</span> <span class="token builtin">string</span> <span class="token operator">|</span>
-	<span class="token builtin">u64</span></code></pre>
+							<div class="title"><h2>type Any <a href="#Any">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/jware-solutions/vgura/blob/master/vgura/result.v#L30"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">type</span> Any <span class="token operator">=</span> Primitive <span class="token operator">|</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>Any <span class="token operator">|</span> <span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span>Any</code></pre>
 <p><code>Any</code> is a sum type that lists the possible types to be decoded and used.</p>
+
+</section>
+						<section id="MatchType" class="doc-node">
+							<div class="title"><h2>type MatchType <a href="#MatchType">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/jware-solutions/vgura/blob/master/vgura/parser.v#L104"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">type</span> MatchType <span class="token operator">=</span> Any <span class="token operator">|</span> MatchResult</code></pre>
+
+
+</section>
+						<section id="Primitive" class="doc-node">
+							<div class="title"><h2>type Primitive <a href="#Primitive">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/jware-solutions/vgura/blob/master/vgura/result.v#L27"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">type</span> Primitive <span class="token operator">=</span> Null <span class="token operator">|</span> <span class="token builtin">bool</span> <span class="token operator">|</span> <span class="token builtin">f32</span> <span class="token operator">|</span> <span class="token builtin">f64</span> <span class="token operator">|</span> <span class="token builtin">i64</span> <span class="token operator">|</span> <span class="token builtin">int</span> <span class="token operator">|</span> <span class="token builtin">string</span> <span class="token operator">|</span> <span class="token builtin">u64</span></code></pre>
+
 
 </section>
 						<section id="Rule" class="doc-node">
@@ -105,7 +96,7 @@
 
 </section>
 						<section id="MatchResultType" class="doc-node">
-							<div class="title"><h2>enum MatchResultType <a href="#MatchResultType">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/jware-solutions/vgura/blob/master/vgura/result.v#L25"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">enum</span> <span class="token symbol">MatchResultType</span> <span class="token punctuation">{</span>
+							<div class="title"><h2>enum MatchResultType <a href="#MatchResultType">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/jware-solutions/vgura/blob/master/vgura/result.v#L38"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">enum</span> <span class="token symbol">MatchResultType</span> <span class="token punctuation">{</span>
 	useless_line
 	pair
 	comment_line
@@ -116,8 +107,30 @@
 <p>MatchResultType</p>
 
 </section>
+						<section id="GuraParser" class="doc-node">
+							<div class="title"><h2>struct GuraParser <a href="#GuraParser">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/jware-solutions/vgura/blob/master/vgura/gura.v#L3"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">struct</span> <span class="token symbol">GuraParser</span> <span class="token punctuation">{</span>
+	Parser
+<span class="token keyword">mut</span><span class="token punctuation">:</span>
+	variables          <span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span>Any
+	indent_char        <span class="token operator">&</span><span class="token builtin">string</span> <span class="token operator">=</span> <span class="token number">0</span>
+	indentation_levels <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+	imported_files     <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+<span class="token punctuation">}</span></code></pre>
+
+
+</section>
+						<section id="GuraParser.load" class="doc-node">
+							<div class="title"><h2>fn (GuraParser) load <a href="#GuraParser.load">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/jware-solutions/vgura/blob/master/vgura/gura.v#L13"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> gp GuraParser<span class="token punctuation">)</span> <span class="token function">load</span><span class="token punctuation">(</span>text <span class="token builtin">string</span><span class="token punctuation">)</span> ?<span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span>Any</code></pre>
+<p>load parses a text in gura format and returns a dict with all the parsed values</p>
+
+</section>
+						<section id="GuraParser.init_params" class="doc-node">
+							<div class="title"><h2>fn (GuraParser) init_params <a href="#GuraParser.init_params">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/jware-solutions/vgura/blob/master/vgura/gura.v#L26"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> gp GuraParser<span class="token punctuation">)</span> <span class="token function">init_params</span><span class="token punctuation">(</span>text <span class="token builtin">string</span><span class="token punctuation">)</span></code></pre>
+<p>init_params sets the params to start parsing from a specific text</p>
+
+</section>
 						<section id="MatchResult" class="doc-node">
-							<div class="title"><h2>struct MatchResult <a href="#MatchResult">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/jware-solutions/vgura/blob/master/vgura/result.v#L35"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">struct</span> <span class="token symbol">MatchResult</span> <span class="token punctuation">{</span>
+							<div class="title"><h2>struct MatchResult <a href="#MatchResult">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/jware-solutions/vgura/blob/master/vgura/result.v#L48"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">struct</span> <span class="token symbol">MatchResult</span> <span class="token punctuation">{</span>
 	result_type MatchResultType
 	value       <span class="token operator">&</span>Any <span class="token operator">=</span> <span class="token number">0</span>
 <span class="token punctuation">}</span></code></pre>
@@ -125,12 +138,12 @@
 
 </section>
 						<section id="MatchResult.str" class="doc-node">
-							<div class="title"><h2>fn (MatchResult) str <a href="#MatchResult.str">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/jware-solutions/vgura/blob/master/vgura/result.v#L55"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span>mr MatchResult<span class="token punctuation">)</span> <span class="token function">str</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">string</span></code></pre>
+							<div class="title"><h2>fn (MatchResult) str <a href="#MatchResult.str">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/jware-solutions/vgura/blob/master/vgura/result.v#L68"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span>mr MatchResult<span class="token punctuation">)</span> <span class="token function">str</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">string</span></code></pre>
 
 
 </section>
 						<section id="Null" class="doc-node">
-							<div class="title"><h2>struct Null <a href="#Null">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/jware-solutions/vgura/blob/master/vgura/result.v#L20"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">struct</span> <span class="token symbol">Null</span> <span class="token punctuation">{</span>
+							<div class="title"><h2>struct Null <a href="#Null">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/jware-solutions/vgura/blob/master/vgura/result.v#L33"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">struct</span> <span class="token symbol">Null</span> <span class="token punctuation">{</span>
 	is_null <span class="token builtin">bool</span> <span class="token operator">=</span> <span class="token boolean">true</span>
 <span class="token punctuation">}</span></code></pre>
 <p><code>Null</code> struct is a simple representation of the <code>null</code> value in GURA.</p>
@@ -179,13 +192,13 @@
 
 </section>
 						<section id="Parser.maybe_match" class="doc-node">
-							<div class="title"><h2>fn (Parser) maybe_match <a href="#Parser.maybe_match">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/jware-solutions/vgura/blob/master/vgura/parser.v#L104"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> p Parser<span class="token punctuation">)</span> <span class="token function">maybe_match</span><span class="token punctuation">(</span>rules ...Rule<span class="token punctuation">)</span> ?Any</code></pre>
+							<div class="title"><h2>fn (Parser) maybe_match <a href="#Parser.maybe_match">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/jware-solutions/vgura/blob/master/vgura/parser.v#L106"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span><span class="token keyword">mut</span> p Parser<span class="token punctuation">)</span> <span class="token function">maybe_match</span><span class="token punctuation">(</span>rules ...Rule<span class="token punctuation">)</span> ?MatchType</code></pre>
 
 
 </section>
 
 						<div class="footer">
-							Powered by vdoc. Generated on: 18 May 2021 04:05:10
+							Powered by vdoc. Generated on: 19 May 2021 00:05:09
 						</div>
 					</div>
 					
