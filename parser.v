@@ -101,7 +101,9 @@ pub fn (mut p Parser) keyword(keywords ...string) ?string {
 		p.pos + 1]}')
 }
 
-pub fn (mut p Parser) maybe_match(rules ...Rule) ?Any {
+pub type MatchType = Any | MatchResult
+
+pub fn (mut p Parser) maybe_match(rules ...Rule) ?MatchType {
 	mut last_error_pos := -1
 	mut last_error := error('')
 	mut last_error_rules := []Rule{}

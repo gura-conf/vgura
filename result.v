@@ -1,6 +1,6 @@
 module vgura
 
-pub const (
+const (
 	// Number chars
 	basic_numbers_chars     = '0-9'
 	hex_oct_bin             = 'A-Fa-fxob'
@@ -10,11 +10,24 @@ pub const (
 	acceptable_number_chars = '$basic_numbers_chars$hex_oct_bin${inf_and_nan}Ee+._-'
 	// acceptable chars for keys
 	key_acceptable_chars    = '0-9A-Za-z_-'
+
+	// special characters to be escaped
+	escape_sequences        = map{
+		'b':  '\b'
+		'f':  '\f'
+		'n':  '\n'
+		'r':  '\r'
+		't':  '\t'
+		'"':  '"'
+		'\\': '\\'
+		'$':  '$'
+	}
 )
 
+pub type Primitive = Null | bool | f32 | f64 | i64 | int | string | u64
+
 // `Any` is a sum type that lists the possible types to be decoded and used.
-pub type Any = Null | []Any | bool | f32 | f64 | i64 | int | map[string]Any | string |
-	u64
+pub type Any = Primitive | []Any | map[string]Any
 
 // `Null` struct is a simple representation of the `null` value in GURA.
 pub struct Null {
