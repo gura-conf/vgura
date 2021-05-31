@@ -26,8 +26,10 @@ const (
 
 pub type Primitive = Null | bool | f32 | f64 | i64 | int | string | u64
 
+pub type Complex = []Any | map[string]Any
+
 // `Any` is a sum type that lists the possible types to be decoded and used.
-pub type Any = Primitive | []Any | map[string]Any
+pub type Any = Complex | Primitive
 
 // `Null` struct is a simple representation of the `null` value in GURA.
 pub struct Null {
