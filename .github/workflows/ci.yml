@@ -19,5 +19,7 @@ jobs:
         sudo ./v symlink
     - name: V doctor
       run: v doctor
+    - name: Move vgura source code to V Modules
+      run: mv ./vgura ~/.vmodules
     - name: Execute Tests
-      run: cd vgura; ./bin/test
+      run: ~/.vmodules/vgura/bin/test
