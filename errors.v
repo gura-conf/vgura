@@ -16,6 +16,25 @@ pub fn new_parse_error(pos int, line int, msg string) IError {
 	}
 }
 
+fn check_parse_error(err IError) IError {
+	if err is ParseError {
+		return err
+	}
+	panic(err.msg)
+}
+
+pub struct DuplicatedVariableError {
+pub:
+	code int
+	msg  string
+}
+
+pub fn new_duplicated_variable_error(msg string) IError {
+	return &DuplicatedVariableError{
+		msg: msg
+	}
+}
+
 pub struct InvalidIndentationError {
 pub:
 	code int

@@ -46,27 +46,34 @@ pub enum MatchResultType {
 	expression
 }
 
-// MatchResult
-pub struct MatchResult {
+// MatchResult interface
+pub interface MatchResult {
+	result_type MatchResultType
+	value &Any
+}
+
+// DefaultMatchResult is the default implementation for MatchResult interface
+[heap]
+struct DefaultMatchResult {
 	result_type MatchResultType
 	value       &Any = 0
 }
 
 // new_match_result_with_value returns a result with value
 pub fn new_match_result_with_value(result_type MatchResultType, value &Any) MatchResult {
-	return MatchResult{
+	return &DefaultMatchResult{
 		result_type: result_type
-		value: unsafe { value }
+		value: value
 	}
 }
 
 // new_match_result returns a result without value
 pub fn new_match_result(result_type MatchResultType) MatchResult {
-	return MatchResult{
+	return &DefaultMatchResult{
 		result_type: result_type
 	}
 }
 
-pub fn (mr MatchResult) str() string {
+pub fn (mr &DefaultMatchResult) str() string {
 	return '$mr.result_type -> $mr.value'
 }
