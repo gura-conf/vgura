@@ -206,3 +206,8 @@ fn useless_line(mut gp GuraParser) ?MatchResult {
 
 	return new_match_result(.useless_line)
 }
+
+// expression match any gura expression
+fn expression(mut gp GuraParser) ?MatchResult {
+	
+}
