@@ -1,27 +1,27 @@
 name: Periodic Check
 on:
   schedule:
-    - cron:  '31 1,12 * * *'
+    - cron: "31 1,12 * * *"
 
 jobs:
   ubuntu:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout Latest V
-      uses: actions/checkout@v2
-      with:
-        repository: vlang/v
-    - name: Checkout vgura
-      uses: actions/checkout@v2
-      with:
-        path: vgura
-    - name: Build V
-      run: |
-        make
-        sudo ./v symlink
-    - name: V doctor
-      run: v doctor
-    - name: Move vgura source code to V Modules
-      run: mv ./vgura ~/.vmodules
-    - name: Execute Tests
-      run: ~/.vmodules/vgura/bin/test
+      - name: Checkout Latest V
+        uses: actions/checkout@v2
+        with:
+          repository: vlang/v
+      - name: Checkout vgura
+        uses: actions/checkout@v2
+        with:
+          path: vgura
+      - name: Build V
+        run: |
+          make
+          sudo ./v symlink
+      - name: V doctor
+        run: v doctor
+      - name: Move vgura source code to V Modules
+        run: mv ./vgura ~/.vmodules
+      - name: Execute Tests
+        run: ~/.vmodules/vgura/bin/test
