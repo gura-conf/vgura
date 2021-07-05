@@ -24,12 +24,6 @@ const (
 	}
 )
 
-// RuleResult defines the return type for GuraParser.maybe_match
-pub type RuleResult = Any | MatchResult | Null | []Any | bool | byte | f32 | f64 | i16 |
-	i64 | i8 | int | map[string]Any | string | u16 | u32 | u64
-
-pub type Rule = fn (mut p GuraParser) ?RuleResult
-
 // `Any` is a sum type that lists the possible types to be decoded and used.
 pub type Any = Null | []Any | bool | byte | f32 | f64 | i16 | i64 | i8 | int | map[string]Any |
 	string | u16 | u32 | u64
@@ -40,6 +34,12 @@ pub struct Null {}
 pub fn (_ Null) str() string {
 	return 'null'
 }
+
+// RuleResult defines the return type for GuraParser.maybe_match
+pub type RuleResult = Any | MatchResult | Null | []Any | bool | byte | f32 | f64 | i16 |
+	i64 | i8 | int | map[string]Any | string | u16 | u32 | u64
+
+pub type Rule = fn (mut p GuraParser) ?RuleResult
 
 // MatchResultType
 pub enum MatchResultType {
