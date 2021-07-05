@@ -6,7 +6,6 @@ pub struct GuraParser {
 	Parser
 mut:
 	variables          map[string]Any
-	indent_char        &string = 0
 	indentation_levels []int
 	imported_files     []string
 }
