@@ -36,7 +36,7 @@ pub fn (_ Null) str() string {
 }
 
 // RuleResult defines the return type for GuraParser.maybe_match
-pub type RuleResult = Any | MatchResult | Null | []Any | bool | byte | f32 | f64 | i16 |
+pub type RuleResult = MatchResult | Null | []Any | bool | byte | f32 | f64 | i16 |
 	i64 | i8 | int | map[string]Any | string | u16 | u32 | u64
 
 pub type Rule = fn (mut p GuraParser) ?RuleResult
@@ -76,51 +76,21 @@ pub fn new_match_result(result_type MatchResultType) RuleResult {
 	}
 }
 
-pub fn (r RuleResult) str() string {
-	return match r {
-		MatchResult {
-			r.str()
-		}
-		[]Any {
-			'[${r.map(it.str()).join(', ')}]'
-		}
-		map[string]Any {
-			encode(r, 0)
-		}
-		else {
-			r.str()
-		}
-	}
-}
-
-pub fn (mr &MatchResult) str() string {
+pub fn (mr MatchResult) str() string {
 	return '$mr.result_type -> $mr.value'
 }
 
-pub fn (value Any) str() string {
-	return match value {
-		[]Any {
-			'[${value.map(it.str()).join(', ')}]'
-		}
-		map[string]Any {
-			encode(value, 0)
-		}
-		else {
-			value.str()
-		}
-	}
-}
-
 pub fn (value Any) str_with_indentation(indentation_level int) string {
-	return match value {
-		[]Any {
-			'[${value.map(it.str_with_indentation(indentation_level)).join(', ')}]'
-		}
-		map[string]Any {
-			encode(value, indentation_level + 1)
-		}
-		else {
-			value.str()
-		}
-	}
+	// return match value {
+	// 	[]Any {
+	// 		'[${value.map(it.str_with_indentation(indentation_level)).join(', ')}]'
+	// 	}
+	// 	map[string]Any {
+	// 		encode(value, indentation_level + 1)
+	// 	}
+	// 	else {
+	// 		value.str()
+	// 	}
+	// }
+	return ''
 }

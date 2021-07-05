@@ -5,7 +5,7 @@ import strconv
 
 // new_line matches with a new line
 fn new_line(mut gp GuraParser) ?RuleResult {
-	if res := gp.char('\f\v\r\n') {
+	if _ := gp.char('\f\v\r\n') {
 		gp.line++
 	}
 	return 0
@@ -71,10 +71,10 @@ fn eat_ws_and_new_lines(mut gp GuraParser) ?RuleResult {
 fn gura_import(mut gp GuraParser) ?RuleResult {
 	gp.keyword('import') ?
 	gp.char(' ') ?
-	file_to_import := gp.maybe_match(quoted_string_with_var) ?
+	file_to_import := gp.maybe_match(quoted_string_with_var) ? as string
 	gp.maybe_match(ws) ?
 	gp.maybe_match(new_line) or { return check_parse_error(err) }
-	return new_match_result_with_value(.import_line, string(file_to_import))
+	return new_match_result_with_value(.import_line, file_to_import)
 }
 
 // quoted_string_with_var matches with a quoted string(with a single quotation mark) taking into consideration a variable inside it.
@@ -83,22 +83,21 @@ fn quoted_string_with_var(mut gp GuraParser) ?RuleResult {
 	quote := gp.keyword('"') ?
 	mut chars := []string{}
 
-	for {
-		if char := gp.char('') {
-			if char == quote {
-				break
-			}
+	// for {
+	// 	if char := gp.char('') {
+	// 		if char == quote {
+	// 			break
+	// 		}
 
-			// computes variables values in string
-			if char == '$' {
-				var_name := gp.get_var_name()
-				value := gp.get_var_value(var_name) ?
-				chars << value.str()
-				continue
-			}
-			chars << char
-		}
-	}
+	// 		// computes variables values in string
+	// 		if char == '$' {
+	// 			var_name := gp.get_var_name()
+	// 			chars << gp.get_var_value(var_name) ? as string
+	// 			continue
+	// 		}
+	// 		chars << char
+	// 	}
+	// }
 
 	return chars.join('')
 }
@@ -127,8 +126,8 @@ fn complex_type(mut gp GuraParser) ?RuleResult {
 fn variable_value(mut gp GuraParser) ?RuleResult {
 	gp.keyword('$') ?
 	if key := gp.maybe_match(unquoted_string) {
-		if value := gp.get_var_value(string(key)) {
-			return value
+		if value := gp.get_var_value(key as string) {
+			return value as string
 		}
 	}
 	return none
@@ -137,9 +136,7 @@ fn variable_value(mut gp GuraParser) ?RuleResult {
 // variable matches with a variable definition
 fn variable(mut gp GuraParser) ?RuleResult {
 	gp.keyword('$') ?
-	matched_key := gp.maybe_match(key) ?
-
-	key_str := string(matched_key)
+	matched_key := gp.maybe_match(key) ? as string
 
 	gp.maybe_match(ws) or { return check_parse_error(err) }
 
@@ -148,12 +145,12 @@ fn variable(mut gp GuraParser) ?RuleResult {
 	}
 
 	if res is MatchResult {
-		if key_str in gp.variables {
-			return new_duplicated_variable_error('Variable $key_str has been already declared')
+		if matched_key in gp.variables {
+			return new_duplicated_variable_error('Variable $matched_key has been already declared')
 		}
 
 		// store as variable
-		gp.variables[key_str] = res.value
+		gp.variables[matched_key] = res.value
 		return new_match_result(.variable)
 	}
 
@@ -220,7 +217,7 @@ fn expression(mut gp GuraParser) ?RuleResult {
 		if item.result_type == .pair {
 			// item is a key / value pair
 			if item.value is []Any {
-				key := string(item.value[0])
+				key := item.value[0] as string
 				value := item.value[1]
 				indentation := item.value[2]
 
@@ -263,9 +260,9 @@ fn key(mut gp GuraParser) ?RuleResult {
 // pair matches with a key - value pair taking into consideration the indentation levels.
 fn pair(mut gp GuraParser) ?RuleResult {
 	pos_before_pair := gp.pos
-	current_identation_level := int(gp.maybe_match(ws_with_indentation) ?)
+	current_identation_level := gp.maybe_match(ws_with_indentation) ? as int
 
-	key_str := string(gp.maybe_match(key) ?)
+	key_str := gp.maybe_match(key) ? as string
 	gp.maybe_match(ws) or { return check_parse_error(err) }
 	gp.maybe_match(new_line) or { return check_parse_error(err) }
 
@@ -302,7 +299,7 @@ fn pair(mut gp GuraParser) ?RuleResult {
 	if result.result_type == .expression {
 		if result.value is []Any {
 			object_values := result.value[1]
-			indentation_level := int(result.value[2])
+			indentation_level := result.value[2] as int
 
 			if indentation_level == current_identation_level {
 				return new_invalid_indentation_error('wrong level for parent with key $key_str')
@@ -443,8 +440,7 @@ fn basic_string(mut gp GuraParser) ?RuleResult {
 			// computes variables values in string
 			if char == '$' {
 				var_name := gp.get_var_name()
-				value := gp.get_var_value(var_name) ?
-				chars << value.str()
+				chars << gp.get_var_value(var_name) ? as string
 			} else {
 				chars << char
 			}
