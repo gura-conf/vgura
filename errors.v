@@ -20,6 +20,9 @@ fn check_parse_error(err IError) IError {
 	if err is ParseError {
 		return err
 	}
+	if err is none {
+		return err
+	}
 	panic(err.msg)
 }
 

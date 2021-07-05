@@ -7,7 +7,7 @@ const (
 	// The rest of the chars are defined in hex_oct_bin
 	inf_and_nan             = 'in'
 	// IMPORTANT: '-' char must be last, otherwise it will be interpreted as a range
-	acceptable_number_chars = '$basic_numbers_chars$hex_oct_bin${inf_and_nan}Ee+._-'
+	number_acceptable_chars = '$basic_numbers_chars$hex_oct_bin${inf_and_nan}Ee+._-'
 	// acceptable chars for keys
 	key_acceptable_chars    = '0-9A-Za-z_-'
 
@@ -24,16 +24,21 @@ const (
 	}
 )
 
-pub type Primitive = Null | bool | f32 | f64 | i64 | int | string | u64
+// RuleResult defines the return type for GuraParser.maybe_match
+pub type RuleResult = Any | MatchResult | Null | []Any | bool | byte | f32 | f64 | i16 |
+	i64 | i8 | int | map[string]Any | string | u16 | u32 | u64
 
-pub type Complex = []Any | map[string]Any
+pub type Rule = fn (mut p GuraParser) ?RuleResult
 
 // `Any` is a sum type that lists the possible types to be decoded and used.
-pub type Any = Complex | Primitive
+pub type Any = Null | []Any | bool | byte | f32 | f64 | i16 | i64 | i8 | int | map[string]Any |
+	string | u16 | u32 | u64
 
 // `Null` struct is a simple representation of the `null` value in GURA.
-pub struct Null {
-	is_null bool = true
+pub struct Null {}
+
+pub fn (_ Null) str() string {
+	return 'null'
 }
 
 // MatchResultType
@@ -43,37 +48,79 @@ pub enum MatchResultType {
 	comment_line
 	import_line
 	variable
+	primitive
+	complex
 	expression
+	list
 }
 
-// MatchResult interface
-pub interface MatchResult {
-	result_type MatchResultType
-	value &Any
-}
-
-// DefaultMatchResult is the default implementation for MatchResult interface
+// MatchResult is the match result implementation
 [heap]
-struct DefaultMatchResult {
+struct MatchResult {
 	result_type MatchResultType
-	value       &Any = 0
+	value       Any
 }
 
 // new_match_result_with_value returns a result with value
-pub fn new_match_result_with_value(result_type MatchResultType, value &Any) MatchResult {
-	return &DefaultMatchResult{
+pub fn new_match_result_with_value(result_type MatchResultType, value Any) RuleResult {
+	return MatchResult{
 		result_type: result_type
 		value: value
 	}
 }
 
 // new_match_result returns a result without value
-pub fn new_match_result(result_type MatchResultType) MatchResult {
-	return &DefaultMatchResult{
+pub fn new_match_result(result_type MatchResultType) RuleResult {
+	return MatchResult{
 		result_type: result_type
 	}
 }
 
-pub fn (mr &DefaultMatchResult) str() string {
+pub fn (r RuleResult) str() string {
+	return match r {
+		MatchResult {
+			r.str()
+		}
+		[]Any {
+			'[${r.map(it.str()).join(', ')}]'
+		}
+		map[string]Any {
+			encode(r, 0)
+		}
+		else {
+			r.str()
+		}
+	}
+}
+
+pub fn (mr &MatchResult) str() string {
 	return '$mr.result_type -> $mr.value'
+}
+
+pub fn (value Any) str() string {
+	return match value {
+		[]Any {
+			'[${value.map(it.str()).join(', ')}]'
+		}
+		map[string]Any {
+			encode(value, 0)
+		}
+		else {
+			value.str()
+		}
+	}
+}
+
+pub fn (value Any) str_with_indentation(indentation_level int) string {
+	return match value {
+		[]Any {
+			'[${value.map(it.str_with_indentation(indentation_level)).join(', ')}]'
+		}
+		map[string]Any {
+			encode(value, indentation_level + 1)
+		}
+		else {
+			value.str()
+		}
+	}
 }

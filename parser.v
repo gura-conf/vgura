@@ -12,8 +12,6 @@ mut:
 	text  string
 }
 
-pub type Rule = fn (mut p Parser) ?Any
-
 // assert_end returns if the parser has reached the end of file
 pub fn (p Parser) assert_end() bool {
 	return p.pos >= p.len
@@ -101,9 +99,7 @@ pub fn (mut p Parser) keyword(keywords ...string) ?string {
 		p.pos + 1]}')
 }
 
-pub type MatchType = Any | MatchResult
-
-pub fn (mut p Parser) maybe_match(rules ...Rule) ?MatchType {
+pub fn (mut p GuraParser) maybe_match(rules ...Rule) ?RuleResult {
 	mut last_error_pos := -1
 	mut last_error := error('')
 	mut last_error_rules := []Rule{}

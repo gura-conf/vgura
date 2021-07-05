@@ -11,9 +11,21 @@ mut:
 	imported_files     []string
 }
 
+// encode generates a gura string from a dictionary
+pub fn (gp GuraParser) encode(data map[string]Any, indentation_level int) string {
+	mut result := ''
+	for key, value in data {
+		indentation := ' '.repeat(indentation_level * 4)
+		result = '$result$indentation$key:'
+		result = '$result${value.str_with_indentation(indentation_level)}'
+		result = '$result\n'
+	}
+	return result
+}
+
 // parse parses a text in gura format and returns a dict with all the parsed values
 pub fn (mut gp GuraParser) parse(text string) ?map[string]Any {
-	gp.init_params()
+	gp.init_params(text)
 	if result := gp.run() {
 		if !gp.assert_end() {
 			return new_parse_error(gp.pos + 1, gp.line, 'Expected end of string but got ${gp.text[
@@ -27,8 +39,13 @@ pub fn (mut gp GuraParser) parse(text string) ?map[string]Any {
 // get_text_with_imports gets final text taking in consideration imports in original text
 pub fn (mut gp GuraParser) get_text_with_imports(original_text string, parent_dir_path string, imported_files ...string) (string, []string) {
 	gp.init_params(original_text)
-	computed_files := gp.compute_imports(parent_dir_path, imported_files)
+	computed_files := gp.compute_imports(parent_dir_path, ...imported_files)
 	return gp.text, computed_files
+}
+
+// compute_imports computes all the import sentences in Gura file taking into consideration relative paths to imported files
+fn (mut gp GuraParser) compute_imports(parent_dir_path string, imported_files ...string) []string {
+	return []string{}
 }
 
 // get_var_name gets a variable name
@@ -61,10 +78,15 @@ pub fn (mut gp GuraParser) get_var_value(key string) ?Any {
 }
 
 fn (mut gp GuraParser) run() ?map[string]Any {
-	gp.compute_imports('', [])
-	result := gp.maybe_match(expression) or { return err }
-	eat_ws_and_new_lines(mut gp)
-	return result.value[0]
+	gp.compute_imports('')
+	result := gp.maybe_match(expression) ?
+	eat_ws_and_new_lines(mut gp) ?
+	if result is MatchResult {
+		if result.value is map[string]Any {
+			return result.value
+		}
+	}
+	return none
 }
 
 // init_params sets the params to start parsing from a specific text
@@ -73,4 +95,31 @@ fn (mut gp GuraParser) init_params(text string) {
 	gp.pos = -1
 	gp.line = 0
 	gp.len = text.len - 1
+}
+
+// get_last_indentation_level get the last indentation level or null in case it does not exist
+fn (mut gp GuraParser) get_last_indentation_level() ?int {
+	if gp.indentation_levels.len > 0 {
+		return gp.indentation_levels[gp.indentation_levels.len - 1]
+	}
+	return none
+}
+
+// remove_last_indentation_level removes, if exists, the last indentation_level
+fn (mut gp GuraParser) remove_last_indentation_level() {
+	if gp.indentation_levels.len > 0 {
+		gp.indentation_levels.pop()
+	}
+}
+
+// parse parses a text in Gura format
+pub fn parse(text string) ?map[string]Any {
+	mut gp := GuraParser{}
+	return gp.parse(text)
+}
+
+// encode generates a Gura string from a dictionary
+pub fn encode(data map[string]Any, indentation_level int) string {
+	mut gp := GuraParser{}
+	return gp.encode(data, indentation_level)
 }
