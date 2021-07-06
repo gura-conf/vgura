@@ -142,19 +142,16 @@ fn variable(mut gp GuraParser) ?RuleResult {
 
 	res := gp.maybe_match(basic_string, literal_string, number, variable_value) or {
 		return check_parse_error(err)
+	} as MatchResult
+
+
+	if matched_key in gp.variables {
+		return new_duplicated_variable_error('Variable $matched_key has been already declared')
 	}
 
-	if res is MatchResult {
-		if matched_key in gp.variables {
-			return new_duplicated_variable_error('Variable $matched_key has been already declared')
-		}
-
-		// store as variable
-		gp.variables[matched_key] = res.value
-		return new_match_result(.variable)
-	}
-
-	panic('This should never happen. File an issue if you see this error')
+	// store as variable
+	gp.variables[matched_key] = res.value
+	return new_match_result(.variable)
 }
 
 // list matches with a list
