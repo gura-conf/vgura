@@ -31,8 +31,9 @@ pub fn (mut gp GuraParser) parse(text string) ?map[string]Any {
 				gp.pos + 1]}')
 		}
 		return result
+	} else {
+		return err
 	}
-	return none
 }
 
 // get_text_with_imports gets final text taking in consideration imports in original text
@@ -55,6 +56,7 @@ pub fn (mut gp GuraParser) get_var_name() string {
 		if var_name_char := gp.char(key_acceptable_chars) {
 			var_name += var_name_char
 		} else {
+			check_parse_error(err)
 			break
 		}
 	}
@@ -78,14 +80,9 @@ pub fn (mut gp GuraParser) get_var_value(key string) ?Any {
 
 fn (mut gp GuraParser) run() ?map[string]Any {
 	gp.compute_imports('')
-	result := gp.maybe_match(expression) ?
-	eat_ws_and_new_lines(mut gp) ?
-	if result is MatchResult {
-		if result.value is map[string]Any {
-			return result.value
-		}
-	}
-	return none
+	result := gp.maybe_match(expression) or { return err } as MatchResult
+	eat_ws_and_new_lines(mut gp) or { return err }
+	return result.value as map[string]Any
 }
 
 // init_params sets the params to start parsing from a specific text

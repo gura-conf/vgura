@@ -38,7 +38,7 @@ pub fn (mut p Parser) split_char_ranges(chars string) ?[]string {
 			continue
 		}
 
-		result << chars[idx].str()
+		result << chars[idx..idx+1]
 		idx += 1
 	}
 
@@ -55,28 +55,28 @@ pub fn (mut p Parser) char(chars string) ?string {
 		return new_parse_error(p.pos + 1, p.line, 'Expected character but got end of string')
 	}
 
-	next_char := p.text[p.pos + 1].str()
+	next_char := p.text[p.pos + 1..p.pos + 2]
 
-	if chars != '' {
-		if split := p.split_char_ranges(chars) {
-			for char_range in split {
-				if char_range.len == 1 {
-					if next_char == char_range {
-						p.pos += 1
-						return next_char
-					}
-				} else if char_range[0].str() <= next_char && next_char <= char_range[2].str() {
+	if chars == '' {
+		p.pos += 1
+		return next_char
+	}
+
+	if split := p.split_char_ranges(chars) {
+		for char_range in split {
+			if char_range.len == 1 {
+				if next_char == char_range {
 					p.pos += 1
 					return next_char
 				}
+			} else if char_range[0..1] <= next_char && next_char <= char_range[2..3] {
+				p.pos += 1
+				return next_char
 			}
 		}
-
-		return new_parse_error(p.pos + 1, p.line, 'Expected [$chars] but got $next_char')
 	}
-
-	p.pos += 1
-	return next_char
+ 
+	return new_parse_error(p.pos + 1, p.line, 'Expected [$chars] but got $next_char')
 }
 
 // keyword matches specific keywords
@@ -110,8 +110,8 @@ pub fn (mut p GuraParser) maybe_match(rules ...Rule) ?RuleResult {
 		if res := rule(mut p) {
 			return res
 		} else {
-			p.pos = init_pos
 			if err is ParseError {
+				p.pos = init_pos
 				if err.pos > last_error_pos {
 					last_error = err
 					last_error_pos = err.pos
@@ -121,6 +121,9 @@ pub fn (mut p GuraParser) maybe_match(rules ...Rule) ?RuleResult {
 						last_error_rules << rule
 					}
 				}
+			} else {
+				// if it is not a ParseError, return it to stop parsing
+				return err
 			}
 		}
 	}
@@ -130,5 +133,5 @@ pub fn (mut p GuraParser) maybe_match(rules ...Rule) ?RuleResult {
 	}
 
 	last_error_pos = util.imin(p.text.len - 1, last_error_pos)
-	return new_parse_error(last_error_pos, p.line, 'Expected $last_error_rules.str() but got ${p.text[last_error_pos]}')
+	return new_parse_error(last_error_pos, p.line, 'Expected ${last_error_rules.str()} but got ${p.text[last_error_pos]}')
 }
