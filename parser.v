@@ -38,7 +38,7 @@ pub fn (mut p Parser) split_char_ranges(chars string) ?[]string {
 			continue
 		}
 
-		result << chars[idx..idx+1]
+		result << chars[idx..idx + 1]
 		idx += 1
 	}
 
@@ -75,7 +75,7 @@ pub fn (mut p Parser) char(chars string) ?string {
 			}
 		}
 	}
- 
+
 	return new_parse_error(p.pos + 1, p.line, 'Expected [$chars] but got $next_char')
 }
 
@@ -133,5 +133,5 @@ pub fn (mut p GuraParser) maybe_match(rules ...Rule) ?RuleResult {
 	}
 
 	last_error_pos = util.imin(p.text.len - 1, last_error_pos)
-	return new_parse_error(last_error_pos, p.line, 'Expected ${last_error_rules.str()} but got ${p.text[last_error_pos]}')
+	return new_parse_error(last_error_pos, p.line, 'Expected $last_error_rules.str() but got ${p.text[last_error_pos]}')
 }

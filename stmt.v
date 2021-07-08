@@ -39,7 +39,6 @@ fn ws_with_indentation(mut gp GuraParser) ?RuleResult {
 			indentation_level++
 		} else {
 			// if it is not a blank or new line, returns from the method
-			check_parse_error(err)
 			break
 		}
 	}
@@ -169,7 +168,9 @@ fn list(mut gp GuraParser) ?RuleResult {
 		if _ := gp.maybe_match(useless_line) {
 			continue
 		} else {
-			check_parse_error(err)
+			if err !is ParseError {
+				return err
+			}
 		}
 
 		item := gp.maybe_match(any_type) or { return check_parse_error(err) } as MatchResult
@@ -190,7 +191,6 @@ fn list(mut gp GuraParser) ?RuleResult {
 fn useless_line(mut gp GuraParser) ?RuleResult {
 	gp.maybe_match(ws) or { return err }
 	gp.maybe_match(comment) or {
-		check_parse_error(err)
 		return new_parse_error(gp.pos + 1, gp.line, 'It is a valid line')
 	}
 	initial_line := gp.line
@@ -210,32 +210,33 @@ fn expression(mut gp GuraParser) ?RuleResult {
 
 	for gp.pos < gp.len {
 		item := gp.maybe_match(variable, pair, useless_line) or {
-			check_parse_error(err)
-			break
 		} as MatchResult
 
 		if item.result_type == .pair {
 			// item is a key / value pair
-			if item.value is []Any {
-				key := item.value[0] as string
-				value := item.value[1]
-				indentation := item.value[2]
+			item_value := item.value as []Any
+			key := item_value[0] as string
+			value := item_value[1]
+			indentation := item_value[2]
 
-				if key in result {
-					return new_duplicated_variable_error('the key $key has been already defined')
-				}
-
-				result[key] = value
-				indentation_level = indentation
-			} else {
-				panic('This should never happen. File an issue if you see this error')
+			if key in result {
+				return new_duplicated_variable_error('the key $key has been already defined')
 			}
+
+			result[key] = value
+			indentation_level = indentation
 		}
 
-		gp.keyword(']', ',') or { return check_parse_error(err) }
-		// break if it is the end of the list
-		gp.remove_last_indentation_level()
-		gp.pos--
+		if _ := gp.keyword(']', ',') {
+			// break if it is the end of the list
+			gp.remove_last_indentation_level()
+			gp.pos--
+			break
+		} else {
+			if err !is ParseError {
+				return err
+			}
+		}
 	}
 
 	if result.len > 0 {
@@ -288,11 +289,6 @@ fn pair(mut gp GuraParser) ?RuleResult {
 
 	// if none, it is an empty expression and therefore invalid
 	result := gp.maybe_match(any_type) or {
-		next_err := check_parse_error(err)
-		if next_err is none {
-			return new_parse_error(gp.pos + 1, gp.line, 'invalid pair')
-		}
-		return next_err
 	} as MatchResult
 
 	// check indentation against parent level
@@ -339,7 +335,6 @@ fn unquoted_string(mut gp GuraParser) ?RuleResult {
 
 	for {
 		char = gp.char(key_acceptable_chars) or {
-			check_parse_error(err)
 			break
 		}
 
@@ -358,7 +353,6 @@ fn number(mut gp GuraParser) ?RuleResult {
 
 	for {
 		char = gp.char(number_acceptable_chars) or {
-			check_parse_error(err)
 			break
 		}
 
@@ -405,7 +399,6 @@ fn basic_string(mut gp GuraParser) ?RuleResult {
 
 	for {
 		closing_quote := gp.keyword(quote) or {
-			check_parse_error(err)
 			break
 		}
 
@@ -465,7 +458,6 @@ fn literal_string(mut gp GuraParser) ?RuleResult {
 
 	for {
 		closing_quote := gp.keyword(quote) or {
-			check_parse_error(err)
 			break
 		}
 

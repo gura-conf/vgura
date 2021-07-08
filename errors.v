@@ -16,15 +16,12 @@ pub fn new_parse_error(pos int, line int, msg string) IError {
 	}
 }
 
-fn check_parse_error(err IError) IError {
+fn check_parse_error(err IError) ?RuleResult {
 	if err is ParseError {
-		return err
-	}
-	if err is none {
-		return err
+		return none
 	}
 	// if it is not a ParseError, return it to stop parsing
-	panic(err.msg)
+	return err
 }
 
 pub struct DuplicatedVariableError {
