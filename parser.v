@@ -82,7 +82,6 @@ pub fn (mut p Parser) char(chars string) ?string {
 }
 
 // maybe_char like char but returns none instead of ParseError
-[inline]
 pub fn (mut p Parser) maybe_char(chars string) ?string {
 	if char := p.char(chars) {
 		return char
@@ -115,7 +114,6 @@ pub fn (mut p Parser) keyword(keywords ...string) ?string {
 }
 
 // maybe_keyword like keyword but returns none instead of ParseError
-[inline]
 pub fn (mut p Parser) maybe_keyword(keywords ...string) ?string {
 	if keyword := p.keyword(...keywords) {
 		return keyword
@@ -165,7 +163,6 @@ pub fn (mut p GuraParser) match_rule(rules ...Rule) ?RuleResult {
 }
 
 // maybe_match like match_rule but returns none instead of ParseError
-[inline]
 pub fn (mut p GuraParser) maybe_match(rules ...Rule) ?RuleResult {
 	if res := p.match_rule(...rules) {
 		return res
