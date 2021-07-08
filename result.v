@@ -35,7 +35,7 @@ pub fn (_ Null) str() string {
 	return 'null'
 }
 
-// RuleResult defines the return type for GuraParser.maybe_match
+// RuleResult defines the return type for GuraParser.match_rule
 pub type RuleResult = MatchResult | Null | []Any | bool | byte | f32 | f64 | i16 | i64 |
 	i8 | int | map[string]Any | string | u16 | u32 | u64
 

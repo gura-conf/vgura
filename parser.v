@@ -99,7 +99,7 @@ pub fn (mut p Parser) keyword(keywords ...string) ?string {
 		p.pos + 1]}')
 }
 
-pub fn (mut p GuraParser) maybe_match(rules ...Rule) ?RuleResult {
+pub fn (mut p GuraParser) match_rule(rules ...Rule) ?RuleResult {
 	mut last_error_pos := -1
 	mut last_error := error('')
 	mut last_error_rules := []Rule{}

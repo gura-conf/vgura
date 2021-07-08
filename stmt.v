@@ -74,9 +74,9 @@ fn eat_ws_and_new_lines(mut gp GuraParser) ?RuleResult {
 fn gura_import(mut gp GuraParser) ?RuleResult {
 	gp.keyword('import') or { return err }
 	gp.char(' ') or { return err }
-	file_to_import := gp.maybe_match(quoted_string_with_var) or { return err } as string
-	gp.maybe_match(ws) or { return err }
-	gp.maybe_match(new_line) or { return check_parse_error(err) }
+	file_to_import := gp.match_rule(quoted_string_with_var) or { return err } as string
+	gp.match_rule(ws) or { return err }
+	gp.match_rule(new_line) or { return check_parse_error(err) }
 	return new_match_result_with_value(.import_line, file_to_import)
 }
 
@@ -107,28 +107,28 @@ fn quoted_string_with_var(mut gp GuraParser) ?RuleResult {
 
 // any_type matches with any primitive or complex type
 fn any_type(mut gp GuraParser) ?RuleResult {
-	if result := gp.maybe_match(primitive_type) {
+	if result := gp.match_rule(primitive_type) {
 		return result
 	}
 
-	return gp.maybe_match(complex_type)
+	return gp.match_rule(complex_type)
 }
 
 // primitive_type matches with a primitive value: null, bool, string (all of four kind of strings), number or variables values
 fn primitive_type(mut gp GuraParser) ?RuleResult {
-	gp.maybe_match(ws) or { return check_parse_error(err) }
-	return gp.maybe_match(null, boolean, basic_string, literal_string, number, variable_value)
+	gp.match_rule(ws) or { return check_parse_error(err) }
+	return gp.match_rule(null, boolean, basic_string, literal_string, number, variable_value)
 }
 
 // complex_type matches with a list or another complex expression
 fn complex_type(mut gp GuraParser) ?RuleResult {
-	return gp.maybe_match(list, expression)
+	return gp.match_rule(list, expression)
 }
 
 // variable_value matches with an already defined variable and gets its value
 fn variable_value(mut gp GuraParser) ?RuleResult {
 	gp.keyword('$') or { return err }
-	if key := gp.maybe_match(unquoted_string) {
+	if key := gp.match_rule(unquoted_string) {
 		if value := gp.get_var_value(key as string) {
 			return value as string
 		}
@@ -139,11 +139,11 @@ fn variable_value(mut gp GuraParser) ?RuleResult {
 // variable matches with a variable definition
 fn variable(mut gp GuraParser) ?RuleResult {
 	gp.keyword('$') or { return err }
-	matched_key := gp.maybe_match(key) or { return err } as string
+	matched_key := gp.match_rule(key) or { return err } as string
 
-	gp.maybe_match(ws) or { return check_parse_error(err) }
+	gp.match_rule(ws) or { return check_parse_error(err) }
 
-	res := gp.maybe_match(basic_string, literal_string, number, variable_value) or {
+	res := gp.match_rule(basic_string, literal_string, number, variable_value) or {
 		return check_parse_error(err)
 	} as MatchResult
 
@@ -160,12 +160,12 @@ fn variable(mut gp GuraParser) ?RuleResult {
 fn list(mut gp GuraParser) ?RuleResult {
 	mut result := []Any{}
 
-	gp.maybe_match(ws) or { return check_parse_error(err) }
+	gp.match_rule(ws) or { return check_parse_error(err) }
 	gp.keyword('[') or { return err }
 
 	for {
 		// discards useless lines between elements of array
-		if _ := gp.maybe_match(useless_line) {
+		if _ := gp.match_rule(useless_line) {
 			continue
 		} else {
 			if err !is ParseError {
@@ -173,28 +173,28 @@ fn list(mut gp GuraParser) ?RuleResult {
 			}
 		}
 
-		item := gp.maybe_match(any_type) or { return check_parse_error(err) } as MatchResult
+		item := gp.match_rule(any_type) or { return check_parse_error(err) } as MatchResult
 		result << item.value
 
-		gp.maybe_match(ws) or { return check_parse_error(err) }
-		gp.maybe_match(new_line) or { return check_parse_error(err) }
+		gp.match_rule(ws) or { return check_parse_error(err) }
+		gp.match_rule(new_line) or { return check_parse_error(err) }
 		gp.keyword(']') or { break }
 	}
 
-	gp.maybe_match(ws) or { return check_parse_error(err) }
-	gp.maybe_match(new_line) or { return check_parse_error(err) }
+	gp.match_rule(ws) or { return check_parse_error(err) }
+	gp.match_rule(new_line) or { return check_parse_error(err) }
 	gp.keyword(']') or { return err }
 	return new_match_result_with_value(.list, result)
 }
 
 // useless_line matches with a useless line. A line is useless when it contains only whitespaces and / or a comment finishing in a new line
 fn useless_line(mut gp GuraParser) ?RuleResult {
-	gp.maybe_match(ws) or { return err }
-	gp.maybe_match(comment) or {
+	gp.match_rule(ws) or { return err }
+	gp.match_rule(comment) or {
 		return new_parse_error(gp.pos + 1, gp.line, 'It is a valid line')
 	}
 	initial_line := gp.line
-	gp.maybe_match(new_line) or { return check_parse_error(err) }
+	gp.match_rule(new_line) or { return check_parse_error(err) }
 
 	if (gp.line - initial_line) != 1 {
 		return new_parse_error(gp.pos + 1, gp.line, 'It is a valid line')
@@ -209,7 +209,7 @@ fn expression(mut gp GuraParser) ?RuleResult {
 	mut indentation_level := Any(0)
 
 	for gp.pos < gp.len {
-		item := gp.maybe_match(variable, pair, useless_line) or {
+		item := gp.match_rule(variable, pair, useless_line) or {
 		} as MatchResult
 
 		if item.result_type == .pair {
@@ -248,7 +248,7 @@ fn expression(mut gp GuraParser) ?RuleResult {
 
 // key matches with a key. A key is an unquoted string followed by a colon (:)
 fn key(mut gp GuraParser) ?RuleResult {
-	key := gp.maybe_match(unquoted_string) or { return err }
+	key := gp.match_rule(unquoted_string) or { return err }
 
 	if key !is string {
 		return new_parse_error(gp.pos + 1, gp.line, 'Expected string but got "${gp.text[gp.pos + 1..]}"')
@@ -261,11 +261,11 @@ fn key(mut gp GuraParser) ?RuleResult {
 // pair matches with a key - value pair taking into consideration the indentation levels.
 fn pair(mut gp GuraParser) ?RuleResult {
 	pos_before_pair := gp.pos
-	current_identation_level := gp.maybe_match(ws_with_indentation) or { return err } as int
+	current_identation_level := gp.match_rule(ws_with_indentation) or { return err } as int
 
-	key_str := gp.maybe_match(key) or { return err } as string
-	gp.maybe_match(ws) or { return check_parse_error(err) }
-	gp.maybe_match(new_line) or { return check_parse_error(err) }
+	key_str := gp.match_rule(key) or { return err } as string
+	gp.match_rule(ws) or { return check_parse_error(err) }
+	gp.match_rule(new_line) or { return check_parse_error(err) }
 
 	// check if indentation is divisible by 4
 	if current_identation_level % 4 != 0 {
@@ -288,7 +288,7 @@ fn pair(mut gp GuraParser) ?RuleResult {
 	}
 
 	// if none, it is an empty expression and therefore invalid
-	result := gp.maybe_match(any_type) or {
+	result := gp.match_rule(any_type) or {
 	} as MatchResult
 
 	// check indentation against parent level
@@ -303,14 +303,14 @@ fn pair(mut gp GuraParser) ?RuleResult {
 				return new_invalid_indentation_error('difference between different indentation levels must be 4')
 			}
 
-			gp.maybe_match(new_line) or { return check_parse_error(err) }
+			gp.match_rule(new_line) or { return check_parse_error(err) }
 			return new_match_result_with_value(.pair, [Any(key_str), object_values,
 				Any(current_identation_level),
 			])
 		}
 	}
 
-	gp.maybe_match(new_line) or { return check_parse_error(err) }
+	gp.match_rule(new_line) or { return check_parse_error(err) }
 	return new_match_result_with_value(.pair, [Any(key_str), result.value,
 		Any(current_identation_level),
 	])
