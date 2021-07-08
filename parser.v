@@ -12,8 +12,8 @@ mut:
 	text  string
 }
 
-// assert_end returns if the parser has reached the end of file
-pub fn (p Parser) assert_end() bool {
+// is_end returns if the parser has reached the end of file
+pub fn (p Parser) is_end() bool {
 	return p.pos >= p.len
 }
 
@@ -39,7 +39,7 @@ pub fn (mut p Parser) split_char_ranges(chars string) ?[]string {
 		}
 
 		result << chars[idx..idx + 1]
-		idx += 1
+		idx++
 	}
 
 	p.cache[chars] = result
@@ -48,7 +48,7 @@ pub fn (mut p Parser) split_char_ranges(chars string) ?[]string {
 
 // char matches a list of specific chars and returns the first that matched
 pub fn (mut p Parser) char(chars string) ?string {
-	if p.assert_end() {
+	if p.is_end() {
 		if chars != '' {
 			return new_parse_error(p.pos + 1, p.line, 'Expected [$chars] but got end of string')
 		}
@@ -58,7 +58,7 @@ pub fn (mut p Parser) char(chars string) ?string {
 	next_char := p.text[p.pos + 1..p.pos + 2]
 
 	if chars == '' {
-		p.pos += 1
+		p.pos++
 		return next_char
 	}
 
@@ -66,22 +66,37 @@ pub fn (mut p Parser) char(chars string) ?string {
 		for char_range in split {
 			if char_range.len == 1 {
 				if next_char == char_range {
-					p.pos += 1
+					p.pos++
 					return next_char
 				}
 			} else if char_range[0..1] <= next_char && next_char <= char_range[2..3] {
-				p.pos += 1
+				p.pos++
 				return next_char
 			}
 		}
+	} else {
+		return err
 	}
 
 	return new_parse_error(p.pos + 1, p.line, 'Expected [$chars] but got $next_char')
 }
 
+// maybe_char like char but returns none instead of ParseError
+[inline]
+pub fn (mut p Parser) maybe_char(chars string) ?string {
+	if char := p.char(chars) {
+		return char
+	} else {
+		if err is ParseError {
+			return none
+		}
+		return err
+	}
+}
+
 // keyword matches specific keywords
 pub fn (mut p Parser) keyword(keywords ...string) ?string {
-	if p.assert_end() {
+	if p.is_end() {
 		return new_parse_error(p.pos + 1, p.line, 'Expected ${keywords.join(',')} but got end of string')
 	}
 
@@ -96,7 +111,20 @@ pub fn (mut p Parser) keyword(keywords ...string) ?string {
 	}
 
 	return new_parse_error(p.pos + 1, p.line, 'Expected ${keywords.join(',')} but got ${p.text[
-		p.pos + 1]}')
+		p.pos + 1..p.pos + 2]}')
+}
+
+// maybe_keyword like keyword but returns none instead of ParseError
+[inline]
+pub fn (mut p Parser) maybe_keyword(keywords ...string) ?string {
+	if keyword := p.keyword(...keywords) {
+		return keyword
+	} else {
+		if err is ParseError {
+			return none
+		}
+		return err
+	}
 }
 
 pub fn (mut p GuraParser) match_rule(rules ...Rule) ?RuleResult {
@@ -134,4 +162,17 @@ pub fn (mut p GuraParser) match_rule(rules ...Rule) ?RuleResult {
 
 	last_error_pos = util.imin(p.text.len - 1, last_error_pos)
 	return new_parse_error(last_error_pos, p.line, 'Expected $last_error_rules.str() but got ${p.text[last_error_pos]}')
+}
+
+// maybe_match like match_rule but returns none instead of ParseError
+[inline]
+pub fn (mut p GuraParser) maybe_match(rules ...Rule) ?RuleResult {
+	if res := p.match_rule(...rules) {
+		return res
+	} else {
+		if err is ParseError {
+			return none
+		}
+		return err
+	}
 }

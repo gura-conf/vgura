@@ -11,7 +11,7 @@ mut:
 }
 
 // encode generates a gura string from a dictionary
-pub fn (gp GuraParser) encode(data map[string]Any, indentation_level int) string {
+pub fn (gp GuraParser) encode(data map[string]Any, indentation_level int, new_line bool) string {
 	mut result := ''
 	for key, value in data {
 		indentation := ' '.repeat(indentation_level * 4)
@@ -26,7 +26,7 @@ pub fn (gp GuraParser) encode(data map[string]Any, indentation_level int) string
 pub fn (mut gp GuraParser) parse(text string) ?map[string]Any {
 	gp.init_params(text)
 	if result := gp.run() {
-		if !gp.assert_end() {
+		if !gp.is_end() {
 			return new_parse_error(gp.pos + 1, gp.line, 'Expected end of string but got ${gp.text[
 				gp.pos + 1]}')
 		}
@@ -116,7 +116,7 @@ pub fn parse(text string) ?map[string]Any {
 }
 
 // encode generates a Gura string from a dictionary
-pub fn encode(data map[string]Any, indentation_level int) string {
+pub fn encode(data map[string]Any) string {
 	mut gp := GuraParser{}
-	return gp.encode(data, indentation_level)
+	return gp.encode(data, 0, true)
 }
