@@ -1,7 +1,7 @@
 module main
 
 import math
-import vgura { encode, parse, Any }
+import vgura { Any, encode, parse }
 
 fn main() {
 	data := map{

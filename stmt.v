@@ -267,11 +267,12 @@ fn list(mut gp GuraParser) ?RuleResult {
 // useless_line matches with a useless line. A line is useless when it contains only whitespaces and / or a comment finishing in a new line
 fn useless_line(mut gp GuraParser) ?RuleResult {
 	gp.match_rule(ws) or { return err }
-	gp.maybe_match(comment) or {
-		return if err is none {
-			new_parse_error(gp.pos + 1, gp.line, 'It is a valid line')
-		} else {
-			err
+	mut is_comment := false
+	if _ := gp.maybe_match(comment) {
+		is_comment = true
+	} else {
+		if err !is none {
+			return err
 		}
 	}
 	initial_line := gp.line
@@ -283,7 +284,9 @@ fn useless_line(mut gp GuraParser) ?RuleResult {
 		}
 	}
 
-	if (gp.line - initial_line) != 1 {
+	is_new_line := (gp.line - initial_line) == 1
+
+	if !is_comment && !is_new_line {
 		return new_parse_error(gp.pos + 1, gp.line, 'It is a valid line')
 	}
 
