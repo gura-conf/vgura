@@ -15,7 +15,7 @@ pub fn (gp GuraParser) encode(data map[string]Any, indentation_level int, new_li
 	mut result := ''
 	for key, value in data {
 		indentation := ' '.repeat(indentation_level * 4)
-		result = '$result$indentation$key:'
+		result = '$result$indentation$key: '
 		result = '$result${value.str_with_indentation(indentation_level)}'
 		result = '$result\n'
 	}
@@ -120,4 +120,9 @@ pub fn parse(text string) ?map[string]Any {
 pub fn encode(data map[string]Any) string {
 	mut gp := GuraParser{}
 	return gp.encode(data, 0, true)
+}
+
+pub fn encode_with_indentation(data map[string]Any, indentation int) string {
+	mut gp := GuraParser{}
+	return gp.encode(data, indentation, true)
 }

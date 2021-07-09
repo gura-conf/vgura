@@ -1,8 +1,12 @@
 module main
 
+import math
 import vgura
 
 fn main() {
-	a := vgura.parse('text: 2') or { panic(err) }
-	println(a)
+	data := map{
+		'pepe': vgura.Any(math.inf(1))
+	}
+	text := vgura.encode(data)
+	println(text)
 }

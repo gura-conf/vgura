@@ -80,16 +80,51 @@ pub fn (mr MatchResult) str() string {
 }
 
 pub fn (value Any) str_with_indentation(indentation_level int) string {
-	// return match value {
-	// 	[]Any {
-	// 		'[${value.map(it.str_with_indentation(indentation_level)).join(', ')}]'
-	// 	}
-	// 	map[string]Any {
-	// 		encode(value, indentation_level + 1)
-	// 	}
-	// 	else {
-	// 		value.str()
-	// 	}
-	// }
-	return ''
+	return match value {
+		[]Any {
+			'[${value.map(it.str_with_indentation(indentation_level)).join(', ')}]'
+		}
+		map[string]Any {
+			encode_with_indentation(value, indentation_level + 1)
+		}
+		bool {
+			value.str()
+		}
+		byte {
+			value.str()
+		}
+		f32 {
+			value.str()
+		}
+		f64 {
+			value.str()
+		}
+		i16 {
+			value.str()
+		}
+		i64 {
+			value.str()
+		}
+		i8 {
+			value.str()
+		}
+		int {
+			value.str()
+		}
+		string {
+			value.str()
+		}
+		u16 {
+			value.str()
+		}
+		u32 {
+			value.str()
+		}
+		u64 {
+			value.str()
+		}
+		Null {
+			value.str()
+		}
+	}
 }
