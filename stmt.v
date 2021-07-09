@@ -40,6 +40,8 @@ fn ws_with_indentation(mut gp GuraParser) ?RuleResult {
 			if err is none {
 				// if it is not a blank or new line, returns from the method
 				break
+			} else {
+				return err
 			}
 		}
 	}
@@ -56,6 +58,7 @@ fn ws(mut gp GuraParser) ?RuleResult {
 			if err is none {
 				break
 			}
+			return err
 		}
 	}
 	return none
@@ -70,6 +73,7 @@ fn eat_ws_and_new_lines(mut gp GuraParser) ?RuleResult {
 			if err is none {
 				break
 			}
+			return err
 		}
 	}
 	return none
@@ -567,9 +571,8 @@ fn basic_string(mut gp GuraParser) ?RuleResult {
 		} else {
 			if err is none {
 				break
-			} else {
-				return err
 			}
+			return err
 		}
 
 		char := gp.char('') or { return err }
@@ -639,9 +642,8 @@ fn literal_string(mut gp GuraParser) ?RuleResult {
 		} else {
 			if err is none {
 				break
-			} else {
-				return err
 			}
+			return err
 		}
 	}
 

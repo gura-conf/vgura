@@ -1,18 +1,35 @@
 module main
 
 import math
-import vgura
+import vgura { encode, parse, Any }
 
 fn main() {
 	data := map{
-		'inf':          vgura.Any(math.inf(1))
-		'complex_data': vgura.Any(map{
-			'text':              vgura.Any('value')
-			'more_complex_data': vgura.Any(map{
-				'number': vgura.Any(2.)
+		'inf':          Any(math.inf(1))
+		'complex_data': Any(map{
+			'text':              Any('value')
+			'more_complex_data': Any(map{
+				'number': Any(2.)
 			})
 		})
 	}
-	text := vgura.encode(data)
+	text := encode(data)
 	println(text)
+
+	gura_str := '
+# This is a Gura document.
+title: "Gura Example"
+
+an_object:
+    username: "Stephen"
+    pass: "Hawking"
+
+# Line breaks are OK when inside arrays
+hosts: [
+  "alpha",
+  "omega"
+]'
+
+	d := parse(gura_str) or { panic(err) }
+	println(encode(d))
 }
