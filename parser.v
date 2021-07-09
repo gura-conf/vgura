@@ -83,14 +83,7 @@ pub fn (mut p Parser) char(chars string) ?string {
 
 // maybe_char like char but returns none instead of ParseError
 pub fn (mut p Parser) maybe_char(chars string) ?string {
-	if char := p.char(chars) {
-		return char
-	} else {
-		if err is ParseError {
-			return none
-		}
-		return err
-	}
+	return p.char(chars) or { return if err is ParseError { none } else { err } }
 }
 
 // keyword matches specific keywords
@@ -115,14 +108,7 @@ pub fn (mut p Parser) keyword(keywords ...string) ?string {
 
 // maybe_keyword like keyword but returns none instead of ParseError
 pub fn (mut p Parser) maybe_keyword(keywords ...string) ?string {
-	if keyword := p.keyword(...keywords) {
-		return keyword
-	} else {
-		if err is ParseError {
-			return none
-		}
-		return err
-	}
+	return p.keyword(...keywords) or { return if err is ParseError { none } else { err } }
 }
 
 pub fn (mut p GuraParser) match_rule(rules ...Rule) ?RuleResult {
@@ -164,12 +150,5 @@ pub fn (mut p GuraParser) match_rule(rules ...Rule) ?RuleResult {
 
 // maybe_match like match_rule but returns none instead of ParseError
 pub fn (mut p GuraParser) maybe_match(rules ...Rule) ?RuleResult {
-	if res := p.match_rule(...rules) {
-		return res
-	} else {
-		if err is ParseError {
-			return none
-		}
-		return err
-	}
+	return p.match_rule(...rules) or { return if err is ParseError { none } else { err } }
 }
