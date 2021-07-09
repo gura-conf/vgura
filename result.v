@@ -85,7 +85,8 @@ pub fn (value Any) str_with_indentation(indentation_level int) string {
 			'[${value.map(it.str_with_indentation(indentation_level)).join(', ')}]'
 		}
 		map[string]Any {
-			encode_with_indentation(value, indentation_level + 1)
+			'\n${' '.repeat(indentation_level)}${encode_with_indentation(value, indentation_level +
+				1)}'
 		}
 		bool {
 			value.str()
