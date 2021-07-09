@@ -7,7 +7,7 @@ import strconv
 fn new_line(mut gp GuraParser) ?RuleResult {
 	if char := gp.char('\f\v\r\n') {
 		gp.line++
-		return char
+		return Any(char)
 	} else {
 		return err
 	}
@@ -47,7 +47,7 @@ fn ws_with_indentation(mut gp GuraParser) ?RuleResult {
 		}
 	}
 
-	return indentation_level
+	return Any(indentation_level)
 }
 
 // ws matches white spaces (blank and tabs)
@@ -82,7 +82,7 @@ fn eat_ws_and_new_lines(mut gp GuraParser) ?RuleResult {
 fn gura_import(mut gp GuraParser) ?RuleResult {
 	gp.keyword('import') or { return err }
 	gp.char(' ') or { return err }
-	file_to_import := gp.match_rule(quoted_string_with_var) or { return err } as string
+	file_to_import := gp.match_rule(quoted_string_with_var) or { return err } as Any as string
 	gp.match_rule(ws) or { return err }
 	gp.maybe_match(new_line) or {
 		if err !is none {
@@ -98,23 +98,23 @@ fn quoted_string_with_var(mut gp GuraParser) ?RuleResult {
 	quote := gp.keyword('"') or { return err }
 	mut chars := []string{}
 
-	// for {
-	// 	if char := gp.char('') {
-	// 		if char == quote {
-	// 			break
-	// 		}
+	for {
+		char := gp.char('') or { return err }
+		if char == quote {
+			break
+		}
 
-	// 		// computes variables values in string
-	// 		if char == '$' {
-	// 			var_name := gp.get_var_name()
-	// 			chars << gp.get_var_value(var_name) or { return err } as string
-	// 			continue
-	// 		}
-	// 		chars << char
-	// 	}
-	// }
+		// computes variables values in string
+		if char == '$' {
+			var_name := gp.get_var_name()
+			chars << gp.get_var_value(var_name) or { return err } as string
+			continue
+		}
 
-	return chars.join('')
+		chars << char
+	}
+
+	return Any(chars.join(''))
 }
 
 // any_type matches with any primitive or complex type
@@ -148,15 +148,15 @@ fn complex_type(mut gp GuraParser) ?RuleResult {
 // variable_value matches with an already defined variable and gets its value
 fn variable_value(mut gp GuraParser) ?RuleResult {
 	gp.keyword('$') or { return err }
-	key := gp.match_rule(unquoted_string) or { return err }
-	value := gp.get_var_value(key as string) or { return err }
-	return value as string
+	key := gp.match_rule(unquoted_string) or { return err } as Any as string
+	value := gp.get_var_value(key) or { return err } as string
+	return Any(value)
 }
 
 // variable matches with a variable definition
 fn variable(mut gp GuraParser) ?RuleResult {
 	gp.keyword('$') or { return err }
-	matched_key := gp.match_rule(key) or { return err } as string
+	matched_key := gp.match_rule(key) or { return err } as Any as string
 
 	gp.maybe_match(ws) or {
 		if err !is none {
@@ -315,11 +315,6 @@ fn expression(mut gp GuraParser) ?RuleResult {
 // key matches with a key. A key is an unquoted string followed by a colon (:)
 fn key(mut gp GuraParser) ?RuleResult {
 	key := gp.match_rule(unquoted_string) or { return err }
-
-	if key !is string {
-		return new_parse_error(gp.pos + 1, gp.line, 'Expected string but got "${gp.text[gp.pos + 1..]}"')
-	}
-
 	gp.keyword(':') or { return err }
 	return key
 }
@@ -331,9 +326,9 @@ fn pair(mut gp GuraParser) ?RuleResult {
 		if err !is none {
 			return err
 		}
-	} as int
+	} as Any as int
 
-	key_str := gp.match_rule(key) or { return err } as string
+	key_str := gp.match_rule(key) or { return err } as Any as string
 	gp.maybe_match(ws) or {
 		if err !is none {
 			return err
@@ -429,7 +424,7 @@ fn unquoted_string(mut gp GuraParser) ?RuleResult {
 		}
 	}
 
-	return chars.join('').trim_right(' ')
+	return Any(chars.join('').trim_right(' '))
 }
 
 // number parses a string checking if it is a number and get its correct value
