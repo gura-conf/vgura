@@ -79,10 +79,11 @@ pub fn (mut gp GuraParser) get_var_value(key string) ?Any {
 }
 
 fn (mut gp GuraParser) run() ?map[string]Any {
-	gp.compute_imports('')
+	// gp.compute_imports('')
 	result := gp.match_rule(expression) or { return err } as MatchResult
-	println('PEPE')
+	debug('Parser finished')
 	eat_ws_and_new_lines(mut gp) or { return err }
+	debug('Executing last `eat_ws_and_new_lines`')
 	// expression result as .value of type `[]Any` and a map[string]Any at possition `0`
 	res := result.value as []Any
 	return res[0] as map[string]Any

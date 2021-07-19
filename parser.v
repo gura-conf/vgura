@@ -18,11 +18,7 @@ pub fn (p Parser) is_end() bool {
 }
 
 // split_char_ranges returns a list of chars from a list of chars which could contain char ranges (i.e. a-z or 0-9)
-pub fn (mut p Parser) split_char_ranges(chars string) ?[]string {
-	if chars in p.cache {
-		return p.cache[chars]
-	}
-
+pub fn split_char_ranges(chars string) ?[]string {
 	mut result := []string{}
 	mut idx := 0
 	mut len := chars.len
@@ -42,6 +38,17 @@ pub fn (mut p Parser) split_char_ranges(chars string) ?[]string {
 		idx++
 	}
 
+	return result
+}
+
+// get_char_ranges returns a list of chars from a list of chars which could contain char ranges (i.e. a-z or 0-9)
+pub fn (mut p Parser) get_char_ranges(chars string) ?[]string {
+	if chars in p.cache {
+		return p.cache[chars]
+	}
+
+	result := split_char_ranges(chars) or { return err }
+
 	p.cache[chars] = result
 	return result
 }
@@ -49,12 +56,9 @@ pub fn (mut p Parser) split_char_ranges(chars string) ?[]string {
 // char matches a list of specific chars and returns the first that matched
 pub fn (mut p Parser) char(chars string) ?string {
 	if p.is_end() {
-		if chars != '' {
-			return new_parse_error(p.pos + 1, p.line, 'Expected [$chars] but got end of string')
-		}
-		return new_parse_error(p.pos + 1, p.line, 'Expected character but got end of string')
+		expected_str := if chars == '' { 'character' } else { '[$chars]' }
+		return new_parse_error(p.pos + 1, p.line, 'Expected $expected_str but got end of string')
 	}
-
 	next_char := p.text[p.pos + 1..p.pos + 2]
 
 	if chars == '' {
@@ -62,7 +66,7 @@ pub fn (mut p Parser) char(chars string) ?string {
 		return next_char
 	}
 
-	if split := p.split_char_ranges(chars) {
+	if split := p.get_char_ranges(chars) {
 		for char_range in split {
 			if char_range.len == 1 {
 				if next_char == char_range {
@@ -98,6 +102,7 @@ pub fn (mut p Parser) keyword(keywords ...string) ?string {
 
 		if p.text[low..high] == keyword {
 			p.pos += keyword.len
+			debug('Keyword $keyword matched')
 			return keyword
 		}
 	}
@@ -113,15 +118,17 @@ pub fn (mut p Parser) maybe_keyword(keywords ...string) ?string {
 
 pub fn (mut p GuraParser) match_rule(rules ...Rule) ?RuleResult {
 	mut last_error_pos := -1
-	mut last_error := error('')
+	mut last_error := IError(voidptr(0))
 	mut last_error_rules := []Rule{}
 
 	for rule in rules {
 		init_pos := p.pos
 
 		if res := rule(mut p) {
+			match_rule_debug(true, '$res')
 			return res
 		} else {
+			match_rule_debug(false, err.msg)
 			if err is ParseError {
 				p.pos = init_pos
 				if err.pos > last_error_pos {

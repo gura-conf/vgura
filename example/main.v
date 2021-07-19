@@ -13,8 +13,8 @@ fn main() {
 			})
 		})
 	}
-	text := encode(data)
-	println(text)
+
+	println(encode(data))
 
 	gura_str := '
 # This is a Gura document.
@@ -23,13 +23,13 @@ title: "Gura Example"
 an_object:
     username: "Stephen"
     pass: "Hawking"
+'.str()
 
-# Line breaks are OK when inside arrays
-hosts: [
-  "alpha",
-  "omega"
-]'
-
-	d := parse(gura_str) or { panic(err) }
-	println(encode(d))
+	if d := parse(gura_str) {
+		println('Parser finished')
+		println('Result:')
+		println(d)
+	} else {
+		println(err)
+	}
 }
