@@ -23,7 +23,12 @@ title: "Gura Example"
 an_object:
     username: "Stephen"
     pass: "Hawking"
-'.str()
+
+# Line breaks are OK when inside arrays
+hosts: [
+  "alpha",
+  "omega"
+]'.str()
 
 	if d := parse(gura_str) {
 		println('Parser finished')

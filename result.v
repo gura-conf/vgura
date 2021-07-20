@@ -22,6 +22,9 @@ const (
 		'\\': '\\'
 		'$':  '$'
 	}
+
+	multiline_quote = '"""'
+	single_line_quote = '"'
 )
 
 // `Any` is a sum type that lists the possible types to be decoded and used.

@@ -112,7 +112,7 @@ fn gura_import(mut gp GuraParser) ?RuleResult {
 fn quoted_string_with_var(mut gp GuraParser) ?RuleResult {
 	rule_debug(@FN)
 
-	quote := gp.keyword('"') or { return err }
+	quote := gp.keyword(single_line_quote) or { return err }
 	mut chars := []string{}
 
 	for {
@@ -571,8 +571,8 @@ fn number(mut gp GuraParser) ?RuleResult {
 fn basic_string(mut gp GuraParser) ?RuleResult {
 	rule_debug(@FN)
 
-	quote := gp.keyword('"""', '"') or { return err }
-	is_multiline := quote == '"""'
+	quote := gp.keyword(multiline_quote, single_line_quote) or { return err }
+	is_multiline := quote == multiline_quote
 
 	// NOTE: A newline immediately following the opening delimiter will be trimmed. All other whitespace and
 	// newline characters remain intact.
@@ -679,8 +679,8 @@ fn basic_string(mut gp GuraParser) ?RuleResult {
 fn literal_string(mut gp GuraParser) ?RuleResult {
 	rule_debug(@FN)
 
-	quote := gp.keyword('"""', '"') or { return err }
-	is_multiline := quote == '"""'
+	quote := gp.keyword(multiline_quote, single_line_quote) or { return err }
+	is_multiline := quote == multiline_quote
 
 	// NOTE: A newline immediately following the opening delimiter will be trimmed. All other whitespace and
 	// newline characters remain intact.
