@@ -18,4 +18,3 @@ fn debug(info string) {
 		println(info)
 	}
 }
-

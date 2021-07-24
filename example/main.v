@@ -16,7 +16,7 @@ fn main() {
 
 	println(encode(data))
 
-	gura_str := '
+	mut gura_str := '
 # This is a Gura document.
 title: "Gura Example"
 
@@ -30,10 +30,12 @@ hosts: [
   "omega"
 ]'.str()
 
+	println('PARSING: $gura_str')
+
 	if d := parse(gura_str) {
 		println('Parser finished')
 		println('Result:')
-		println(d)
+		println(encode(d))
 	} else {
 		println(err)
 	}

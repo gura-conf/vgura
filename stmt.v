@@ -123,7 +123,7 @@ fn quoted_string_with_var(mut gp GuraParser) ?RuleResult {
 
 		// computes variables values in string
 		if char == '$' {
-			var_name := gp.get_var_name()
+			var_name := gp.get_var_name() or { return err }
 			chars << gp.get_var_value(var_name) or { return err } as string
 			continue
 		}
@@ -176,8 +176,8 @@ fn variable_value(mut gp GuraParser) ?RuleResult {
 
 	gp.keyword('$') or { return err }
 	key := gp.match_rule(unquoted_string) or { return err } as Any as string
-	value := gp.get_var_value(key) or { return err } as string
-	return Any(value)
+	value := gp.get_var_value(key) or { return err }
+	return new_match_result_with_value(.primitive, value)
 }
 
 // variable matches with a variable definition
@@ -326,7 +326,7 @@ fn expression(mut gp GuraParser) ?RuleResult {
 	rule_debug(@FN)
 
 	mut result := map[string]Any{}
-	mut indentation_level := Any(0)
+	mut indentation_level := 0
 
 	for gp.pos < gp.len {
 		if match_result := gp.maybe_match(variable, pair, useless_line) {
@@ -337,7 +337,7 @@ fn expression(mut gp GuraParser) ?RuleResult {
 				item_value := item.value as []Any
 				key := item_value[0] as string
 				value := item_value[1]
-				indentation := item_value[2]
+				indentation := item_value[2] as int
 
 				if key in result {
 					return new_duplicated_variable_error('the key $key has been already defined')
@@ -347,9 +347,10 @@ fn expression(mut gp GuraParser) ?RuleResult {
 				indentation_level = indentation
 			}
 		} else {
-			if err !is none {
-				return err
+			if err is none {
+				break
 			}
+			return err
 		}
 
 		if _ := gp.maybe_keyword(']', ',') {
@@ -368,7 +369,7 @@ fn expression(mut gp GuraParser) ?RuleResult {
 	debug(result.str())
 
 	if result.len > 0 {
-		return new_match_result_with_value(.expression, [Any(result), indentation_level])
+		return new_match_result_with_value(.expression, [Any(result), Any(indentation_level)])
 	}
 
 	return none
@@ -378,9 +379,16 @@ fn expression(mut gp GuraParser) ?RuleResult {
 fn key(mut gp GuraParser) ?RuleResult {
 	rule_debug(@FN)
 
-	key := gp.match_rule(unquoted_string) or { return err }
-	gp.keyword(':') or { return err }
-	return key
+	if matched_key := gp.match_rule(unquoted_string) {
+		gp.keyword(':') or { return err }
+		return matched_key
+	} else {
+		if err is none {
+			return new_parse_error(gp.pos + 1, gp.line, 'Expected string but got ${gp.text[gp.pos +
+				1..]}')
+		}
+		return err
+	}
 }
 
 // pair matches with a key - value pair taking into consideration the indentation levels.
@@ -399,9 +407,7 @@ fn pair(mut gp GuraParser) ?RuleResult {
 		}
 	}
 
-	key_result := gp.match_rule(key) or {
-		return err 
-	}
+	key_result := gp.match_rule(key) or { return err }
 	any_key := key_result as Any
 	key_str := any_key as string
 	if _ := gp.maybe_match(ws) {
@@ -436,6 +442,12 @@ fn pair(mut gp GuraParser) ?RuleResult {
 			gp.pos = pos_before_pair
 			// This breaks the parent loop
 			return none
+		}
+	} else {
+		if err is none {
+			gp.indentation_levels << current_identation_level
+		} else {
+			return err
 		}
 	}
 
@@ -516,6 +528,8 @@ fn unquoted_string(mut gp GuraParser) ?RuleResult {
 		} else {
 			if err is none {
 				break
+			} else {
+				return err
 			}
 		}
 	}
@@ -542,6 +556,8 @@ fn number(mut gp GuraParser) ?RuleResult {
 		} else {
 			if err is none {
 				break
+			} else {
+				return err
 			}
 		}
 	}
@@ -570,7 +586,6 @@ fn number(mut gp GuraParser) ?RuleResult {
 // basic_string matches with a simple / multiline basic string
 fn basic_string(mut gp GuraParser) ?RuleResult {
 	rule_debug(@FN)
-
 	quote := gp.keyword(multiline_quote, single_line_quote) or { return err }
 	is_multiline := quote == multiline_quote
 
@@ -627,44 +642,7 @@ fn basic_string(mut gp GuraParser) ?RuleResult {
 		} else {
 			// computes variables values in string
 			if char == '$' {
-				var_name := gp.get_var_name()
-				chars << gp.get_var_value(var_name) or { return err } as string
-			} else {
-				chars << char
-			}
-		}
-
-		char = gp.char('') or { return err }
-
-		if char == '\\' {
-			escape := gp.char('') or { return err }
-
-			// check backslash followed by a newline to trim all whitespaces
-			if is_multiline && escape == '\n' {
-				eat_ws_and_new_lines(mut gp) or { return err }
-			} else {
-				// supports unicode of 16 and 32 bits representation
-				if escape == 'u' || escape == 'U' {
-					num_chars_code_point := if escape == 'u' { 4 } else { 8 }
-					mut code_point := []string{}
-
-					for _ in 0 .. num_chars_code_point {
-						code_point_char := gp.char('0-9a-fA-F') or { return err }
-						code_point << code_point_char
-					}
-					hex_value := strconv.parse_int(code_point.join(''), 16, 0) or { return err }
-					// @todo: String.fromCharCode(hexValue) // converts from UNICODE to string
-					char_value := hex_value.str()
-					chars << char_value
-				} else {
-					// get escaped char
-					chars << escape_sequences[escape] or { char }
-				}
-			}
-		} else {
-			// computes variables values in string
-			if char == '$' {
-				var_name := gp.get_var_name()
+				var_name := gp.get_var_name() or { return err }
 				chars << gp.get_var_value(var_name) or { return err } as string
 			} else {
 				chars << char

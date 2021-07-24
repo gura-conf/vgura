@@ -23,7 +23,7 @@ const (
 		'$':  '$'
 	}
 
-	multiline_quote = '"""'
+	multiline_quote   = '"""'
 	single_line_quote = '"'
 )
 
@@ -116,7 +116,7 @@ pub fn (value Any) str_with_indentation(indentation_level int) string {
 			value.str()
 		}
 		string {
-			value.str()
+			'"$value.str()"'
 		}
 		u16 {
 			value.str()

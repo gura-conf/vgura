@@ -24,7 +24,7 @@ pub fn (gp GuraParser) encode(data map[string]Any, indentation_level int, new_li
 
 // parse parses a text in gura format and returns a dict with all the parsed values
 pub fn (mut gp GuraParser) parse(text string) ?map[string]Any {
-	gp.init_params(text)
+	gp.init(text)
 	if result := gp.run() {
 		if !gp.is_end() {
 			return new_parse_error(gp.pos + 1, gp.line, 'Expected end of string but got ${gp.text[
@@ -38,7 +38,7 @@ pub fn (mut gp GuraParser) parse(text string) ?map[string]Any {
 
 // get_text_with_imports gets final text taking in consideration imports in original text
 pub fn (mut gp GuraParser) get_text_with_imports(original_text string, parent_dir_path string, imported_files ...string) (string, []string) {
-	gp.init_params(original_text)
+	gp.init(original_text)
 	computed_files := gp.compute_imports(parent_dir_path, ...imported_files)
 	return gp.text, computed_files
 }
@@ -50,14 +50,17 @@ fn (mut gp GuraParser) compute_imports(parent_dir_path string, imported_files ..
 }
 
 // get_var_name gets a variable name
-pub fn (mut gp GuraParser) get_var_name() string {
+pub fn (mut gp GuraParser) get_var_name() ?string {
 	mut var_name := ''
 
 	for {
 		if var_name_char := gp.char(key_acceptable_chars) {
 			var_name += var_name_char
 		} else {
-			break
+			if err is none {
+				break
+			}
+			return err
 		}
 	}
 
@@ -80,17 +83,18 @@ pub fn (mut gp GuraParser) get_var_value(key string) ?Any {
 
 fn (mut gp GuraParser) run() ?map[string]Any {
 	// gp.compute_imports('')
-	result := gp.match_rule(expression) or { return err } as MatchResult
+	result := gp.match_rule(expression) or { return err }
 	debug('Parser finished')
 	eat_ws_and_new_lines(mut gp) or { return err }
 	debug('Executing last `eat_ws_and_new_lines`')
 	// expression result as .value of type `[]Any` and a map[string]Any at possition `0`
-	res := result.value as []Any
+	match_result := result as MatchResult
+	res := match_result.value as []Any
 	return res[0] as map[string]Any
 }
 
-// init_params sets the params to start parsing from a specific text
-fn (mut gp GuraParser) init_params(text string) {
+// init sets the params to start parsing from a specific text
+fn (mut gp GuraParser) init(text string) {
 	gp.text = text
 	gp.pos = -1
 	gp.line = 0
