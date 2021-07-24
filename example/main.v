@@ -23,6 +23,8 @@ title: "Gura Example"
 an_object:
     username: "Stephen"
     pass: "Hawking"
+    null_value: null
+    number_value: 6.0
 
 # Line breaks are OK when inside arrays
 hosts: [
