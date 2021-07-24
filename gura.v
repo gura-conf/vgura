@@ -83,9 +83,9 @@ pub fn (mut gp GuraParser) get_var_value(key string) ?Any {
 
 fn (mut gp GuraParser) run() ?map[string]Any {
 	// gp.compute_imports('')
-	result := gp.match_rule(expression) or { return err }
+	result := gp.match_rule(expression) ?
 	debug('Parser finished')
-	eat_ws_and_new_lines(mut gp) or { return err }
+	eat_ws_and_new_lines(mut gp) ?
 	debug('Executing last `eat_ws_and_new_lines`')
 	// expression result as .value of type `[]Any` and a map[string]Any at possition `0`
 	match_result := result as MatchResult

@@ -47,7 +47,7 @@ pub fn (mut p Parser) get_char_ranges(chars string) ?[]string {
 		return p.cache[chars]
 	}
 
-	result := split_char_ranges(chars) or { return err }
+	result := split_char_ranges(chars) ?
 
 	p.cache[chars] = result
 	return result
