@@ -32,13 +32,14 @@ hosts: [
   "omega"
 ]'.str()
 
-	println('PARSING: $gura_str')
-
 	if d := parse(gura_str) {
-		println('Parser finished')
-		println('Result:')
+		println('Parser finished successfully')
+		println('')
 		println(encode(d))
 	} else {
-		println(err)
+		if err !is none {
+			println('Parser finished successfully with error')
+			panic(err)
+		}
 	}
 }
