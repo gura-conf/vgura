@@ -21,7 +21,7 @@ fn test_comment() {
 
 fn test_ws_with_indentation() {
 	mut gp := GuraParser{}
-	
+
 	ws_str := ' '.repeat(4)
 	gp.init(ws_str)
 	if result := ws_with_indentation(mut gp) {
@@ -41,7 +41,7 @@ fn test_ws_with_indentation() {
 
 fn test_ws() {
 	mut gp := GuraParser{}
-	
+
 	ws_str := ' '.repeat(4)
 	gp.init(ws_str)
 	if count := ws(mut gp) {
@@ -67,7 +67,7 @@ fn test_ws() {
 
 fn test_eat_ws_and_new_lines() {
 	mut gp := GuraParser{}
-	
+
 	ws_and_new_lines_str := ' \f\v\r\n\t\t\t\n'
 	gp.init(ws_and_new_lines_str)
 	if count := eat_ws_and_new_lines(mut gp) {
@@ -86,7 +86,7 @@ fn test_eat_ws_and_new_lines() {
 
 fn test_gura_import() {
 	mut gp := GuraParser{}
-	
+
 	file_name := 'file.ura'
 	gp.init('import "$file_name"')
 	if result := gura_import(mut gp) {
@@ -108,8 +108,8 @@ fn test_gura_import() {
 
 fn test_quoted_string_with_var() {
 	mut gp := GuraParser{}
-	
-	str := "text"
+
+	str := 'text'
 	gp.init('"$str"')
 	if result := quoted_string_with_var(mut gp) {
 		result_str := result as Any as string
@@ -128,7 +128,7 @@ fn test_quoted_string_with_var() {
 
 fn test_any_type() {
 	mut gp := GuraParser{}
-	
+
 	number := 9.4
 	gp.init('$number')
 	if result := any_type(mut gp) {
@@ -150,7 +150,7 @@ fn test_any_type() {
 
 fn test_primitive() {
 	mut gp := GuraParser{}
-	
+
 	number := 9.4
 	gp.init('$number')
 	if result := primitive_type(mut gp) {
@@ -172,7 +172,7 @@ fn test_primitive() {
 
 fn test_complex_type() {
 	mut gp := GuraParser{}
-	
+
 	list := ['value1', 'value2', 'value3'].map(Any(it))
 	gp.init('["value1", "value2", "value3"]')
 	if result := complex_type(mut gp) {
@@ -194,7 +194,7 @@ fn test_complex_type() {
 
 fn test_variable_value() {
 	mut gp := GuraParser{}
-	
+
 	gp.init('\$USER')
 	if expected_user := gp.get_var_value('USER') {
 		if result := variable_value(mut gp) {
@@ -219,7 +219,7 @@ fn test_variable_value() {
 
 fn test_variable() {
 	mut gp := GuraParser{}
-	
+
 	gp.init('\$var: 9.4')
 	if result := variable(mut gp) {
 		match_result := result as MatchResult
@@ -244,7 +244,7 @@ fn test_variable() {
 
 fn test_list() {
 	mut gp := GuraParser{}
-	
+
 	values := ['value1', 'value2', 'value3'].map(Any(it))
 	gp.init('["value1", "value2", "value3"]')
 	if result := list(mut gp) {
@@ -266,7 +266,7 @@ fn test_list() {
 
 fn test_useless_line() {
 	mut gp := GuraParser{}
-	
+
 	gp.init('# This is a useless line')
 	if result := useless_line(mut gp) {
 		match_result := result as MatchResult
@@ -278,7 +278,7 @@ fn test_useless_line() {
 
 fn test_key() {
 	mut gp := GuraParser{}
-	
+
 	gp.init('key:')
 	if result := key(mut gp) {
 		matched_key := result as Any as string
@@ -297,7 +297,7 @@ fn test_key() {
 
 fn test_null() {
 	mut gp := GuraParser{}
-	
+
 	expected_value := Null{}
 	gp.init('$expected_value.str()')
 	if result := null(mut gp) {
@@ -319,7 +319,7 @@ fn test_null() {
 
 fn test_boolean() {
 	mut gp := GuraParser{}
-	
+
 	expected_value := true
 	gp.init('$expected_value.str()')
 	if result := boolean(mut gp) {
@@ -341,7 +341,7 @@ fn test_boolean() {
 
 fn test_number() {
 	mut gp := GuraParser{}
-	
+
 	expected_value := 9.78
 	gp.init('$expected_value.str()')
 	if result := number(mut gp) {

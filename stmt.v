@@ -58,7 +58,7 @@ fn ws_with_indentation(mut gp GuraParser) ?RuleResult {
 // ws matches white spaces (blank and tabs)
 fn ws(mut gp GuraParser) ?RuleResult {
 	rule_debug(@FN)
-	
+
 	mut count := 0
 
 	for {
