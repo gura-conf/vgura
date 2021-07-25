@@ -16,7 +16,7 @@ fn main() {
 
 	println(encode(data))
 
-	mut gura_str := '
+	gura_str := '
 # This is a Gura document.
 title: "Gura Example"
 
