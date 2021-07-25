@@ -24,14 +24,38 @@ fn check_parse_error(err IError) ?RuleResult {
 	return err
 }
 
-pub struct DuplicatedVariableError {
+pub struct DuplicatedImportError {
 pub:
 	code int
 	msg  string
 }
 
 pub fn new_duplicated_variable_error(msg string) IError {
+	return &DuplicatedImportError{
+		msg: msg
+	}
+}
+
+pub struct DuplicatedVariableError {
+pub:
+	code int
+	msg  string
+}
+
+pub fn new_duplicated_import_error(msg string) IError {
 	return &DuplicatedVariableError{
+		msg: msg
+	}
+}
+
+pub struct FileNotFoundError {
+pub:
+	code int
+	msg  string
+}
+
+pub fn new_file_not_found_error(msg string) IError {
+	return &FileNotFoundError{
 		msg: msg
 	}
 }

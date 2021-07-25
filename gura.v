@@ -7,7 +7,7 @@ pub struct GuraParser {
 mut:
 	variables          map[string]Any
 	indentation_levels []int
-	imported_files     []string
+	imported_files     map[string]bool
 }
 
 // encode generates a gura string from a dictionary
@@ -37,16 +37,64 @@ pub fn (mut gp GuraParser) parse(text string) ?map[string]Any {
 }
 
 // get_text_with_imports gets final text taking in consideration imports in original text
-pub fn (mut gp GuraParser) get_text_with_imports(original_text string, parent_dir_path string, imported_files ...string) (string, []string) {
+pub fn (mut gp GuraParser) get_text_with_imports(original_text string, parent_dir_path string) ?string {
 	gp.init(original_text)
-	computed_files := gp.compute_imports(parent_dir_path, ...imported_files)
-	return gp.text, computed_files
+	gp.compute_imports(parent_dir_path) ?
+	return gp.text
 }
 
 // compute_imports computes all the import sentences in Gura file taking into consideration relative paths to imported files
-fn (mut gp GuraParser) compute_imports(parent_dir_path string, imported_files ...string) []string {
-	// @todo: Finish this implementation once the rest works
-	return []string{}
+fn (mut gp GuraParser) compute_imports(parent_dir_path string) ? {
+	mut files_to_import := []string{}
+
+	// first, consumes all the import sentences to replace all of them
+	for gp.pos < gp.len {
+		if rule_result := gp.maybe_match(gura_import, variable, useless_line) {
+			match_result := rule_result as MatchResult
+			// check, it could be a comment
+			if match_result.result_type == .import_line {
+				files_to_import << match_result.value as string
+			}
+		} else {
+			if err is none {
+				break
+			}
+			return err
+		}
+	}
+
+	mut final_content := ''
+
+	for file_name in files_to_import {
+		// gets the final file path considering parent directory
+		file_path := if parent_dir_path == '' {
+			file_name
+		} else {
+			os.join_path(parent_dir_path, file_name)
+		}
+
+		// files can be imported only once.This prevents circular reference
+		if file_path in gp.imported_files {
+			return new_duplicated_import_error('file $file_path has been already imported')
+		}
+
+		// checks if file exists
+		if !os.is_file(file_path) {
+			return new_file_not_found_error('file $file_path does not exists')
+		}
+
+		content := os.read_file(file_path) ?
+		mut aux_parser := GuraParser{}
+		next_parent_dir_path := os.dir(file_path)
+		content_with_imports := aux_parser.get_text_with_imports(content, next_parent_dir_path) ?
+
+		final_content += '$content_with_imports\n'
+
+		gp.imported_files[file_path] = true
+	}
+
+	// sets as new text
+	gp.init('$final_content${gp.text[gp.pos + 1..]}')
 }
 
 // get_var_name gets a variable name
@@ -82,7 +130,7 @@ pub fn (mut gp GuraParser) get_var_value(key string) ?Any {
 }
 
 fn (mut gp GuraParser) run() ?map[string]Any {
-	// gp.compute_imports('')
+	gp.compute_imports('') ?
 	result := gp.match_rule(expression) ?
 	debug('Parser finished')
 	eat_ws_and_new_lines(mut gp) ?
