@@ -38,7 +38,7 @@ hosts: [
 		println(encode(d))
 	} else {
 		if err !is none {
-			println('Parser finished successfully with error')
+			println('Parser finished with error')
 			panic(err)
 		}
 	}
