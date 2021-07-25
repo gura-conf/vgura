@@ -100,6 +100,10 @@ pub fn (mut p Parser) keyword(keywords ...string) ?string {
 		low := p.pos + 1
 		high := low + keyword.len
 
+		if p.text.len < high {
+			continue
+		}
+
 		if p.text[low..high] == keyword {
 			p.pos += keyword.len
 			debug('Keyword $keyword matched')

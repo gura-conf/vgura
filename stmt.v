@@ -58,9 +58,12 @@ fn ws_with_indentation(mut gp GuraParser) ?RuleResult {
 // ws matches white spaces (blank and tabs)
 fn ws(mut gp GuraParser) ?RuleResult {
 	rule_debug(@FN)
+	
+	mut count := 0
 
 	for {
 		if _ := gp.maybe_keyword(' ', '\t') {
+			count++
 			continue
 		} else {
 			if err is none {
@@ -69,15 +72,18 @@ fn ws(mut gp GuraParser) ?RuleResult {
 			return err
 		}
 	}
-	return Any(0)
+	return Any(count)
 }
 
 // eat_ws_and_new_lines consumes all the white spaces and end of line
 fn eat_ws_and_new_lines(mut gp GuraParser) ?RuleResult {
 	rule_debug(@FN)
 
+	mut count := 0
+
 	for {
 		if _ := gp.maybe_char(' \f\v\r\n\t') {
+			count++
 			continue
 		} else {
 			if err is none {
@@ -86,7 +92,7 @@ fn eat_ws_and_new_lines(mut gp GuraParser) ?RuleResult {
 			return err
 		}
 	}
-	return Any(0)
+	return Any(count)
 }
 
 // gura_import matches import sentence
@@ -95,7 +101,8 @@ fn gura_import(mut gp GuraParser) ?RuleResult {
 
 	gp.keyword('import') ?
 	gp.char(' ') ?
-	file_to_import := gp.match_rule(quoted_string_with_var) ? as Any as string
+	match_result := gp.match_rule(quoted_string_with_var) ?
+	file_to_import := match_result as Any
 	gp.match_rule(ws) ?
 	if _ := gp.maybe_match(new_line) {
 		// ignore this case for now
@@ -175,7 +182,8 @@ fn variable_value(mut gp GuraParser) ?RuleResult {
 	rule_debug(@FN)
 
 	gp.keyword('$') ?
-	key := gp.match_rule(unquoted_string) ? as Any as string
+	match_result := gp.match_rule(unquoted_string) ?
+	key := match_result as Any as string
 	value := gp.get_var_value(key) ?
 	return new_match_result_with_value(.primitive, value)
 }
@@ -185,7 +193,8 @@ fn variable(mut gp GuraParser) ?RuleResult {
 	rule_debug(@FN)
 
 	gp.keyword('$') ?
-	matched_key := gp.match_rule(key) ? as Any as string
+	match_result := gp.match_rule(key) ?
+	matched_key := match_result as Any as string
 
 	if _ := gp.maybe_match(ws) {
 		// ignore this case for now
@@ -195,14 +204,15 @@ fn variable(mut gp GuraParser) ?RuleResult {
 		}
 	}
 
-	res := gp.match_rule(basic_string, literal_string, number, variable_value) ? as MatchResult
+	res := gp.match_rule(basic_string, literal_string, number, variable_value) ?
+	result := res as MatchResult
 
 	if matched_key in gp.variables {
 		return new_duplicated_variable_error('Variable $matched_key has been already declared')
 	}
 
 	// store as variable
-	gp.variables[matched_key] = res.value
+	gp.variables[matched_key] = result.value
 	return new_match_result(.variable)
 }
 
