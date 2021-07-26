@@ -28,7 +28,7 @@ pub fn (mut gp GuraParser) parse(text string) ?map[string]Any {
 	if result := gp.run() {
 		if !gp.is_end() {
 			return new_parse_error(gp.pos + 1, gp.line, 'Expected end of string but got ${gp.text[
-				gp.pos + 1]}')
+				gp.pos + 1..gp.pos + 2]}')
 		}
 		return result
 	} else {

@@ -276,9 +276,10 @@ fn list(mut gp GuraParser) ?RuleResult {
 				}
 			}
 		} else {
-			if err !is none {
-				return err
+			if err is none {
+				break
 			}
+			return err
 		}
 	}
 
@@ -413,6 +414,7 @@ fn pair(mut gp GuraParser) ?RuleResult {
 	key_result := gp.match_rule(key) ?
 	any_key := key_result as Any
 	key_str := any_key as string
+
 	if _ := gp.maybe_match(ws) {
 		// ignore this case for now
 	} else {
@@ -575,7 +577,7 @@ fn number(mut gp GuraParser) ?RuleResult {
 		return new_match_result_with_value(.primitive, math.inf(1))
 	}
 
-	if number == 'nan' {
+	if number == 'nan' || number == '+nan' || number == '-nan' {
 		return new_match_result_with_value(.primitive, math.nan())
 	}
 

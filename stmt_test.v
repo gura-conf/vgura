@@ -275,7 +275,7 @@ fn test_complex_type_expression_3() {
 	gp.init('
 # Services configuration
 services:
-    nginx:
+    local_nginx:
         host: "127.0.0.1"
         port: 80
     apache:
@@ -285,7 +285,7 @@ services:
 	if result := complex_type(mut gp) {
 		expected := map{
 			'services': Any(map{
-				'nginx':  Any(map{
+				'local_nginx':  Any(map{
 					'host': Any('127.0.0.1')
 					'port': Any(80)
 				})

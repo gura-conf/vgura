@@ -1,3 +1,5 @@
+import "nan.ura"
+
 a_string: "test string"
 int1: +99
 int2: 42
@@ -58,7 +60,7 @@ null_value: $var
 
 # Object
 services:
-    nginx:
+    local_nginx:
         host: "127.0.0.1"
         port: 80
     apache:
@@ -67,16 +69,17 @@ services:
 
 # Mixed-type arrays
 numbers: [ 0.1, 0.2, 0.5, 1, 2, 5 ]
-tango_singers: [
-    user1:
-        name: "Carlos"
-        surname: "Gardel"
-        year_of_birth: 1890
-    user2:
-        name: "Aníbal"
-        surname: "Troilo"
-        year_of_birth: 1914
-]
+# This case is not working yet
+# tango_singers: [
+#     user1:
+#         name: "Carlos"
+#         surname: "Gardel"
+#         year_of_birth: 1890,
+#     user2:
+#         name: "Aníbal"
+#         surname: "Troilo"
+#         year_of_birth: 1914
+# ]
 
 integers2: [
   1, 2, 3
