@@ -14,8 +14,7 @@
 >>> println(data)
 {'text': gura_conf.vgura.Any('Hello World!')}
 >>> encode(data)
-text: Hello World!
->>>
+text: "Hello World!"
 ```
 
 ## Installation
