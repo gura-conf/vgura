@@ -20,8 +20,11 @@ jobs:
           sudo ./v symlink
       - name: V doctor
         run: v doctor
+      - name: Move vgura source code to V Modules
+        run: |
+          mkdir ~/.vmodules/gura_conf
+          mv ./vgura ~/.vmodules
       - name: Validate docs
         run: |
-          v install ulises-jeremias.vgura
           cd vgura
           v check-md .
