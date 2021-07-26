@@ -39,12 +39,12 @@ pub fn (_ Null) str() string {
 }
 
 // RuleResult defines the return type for GuraParser.match_rule
-pub type RuleResult = Any | MatchResult
+type RuleResult = Any | MatchResult
 
-pub type Rule = fn (mut p GuraParser) ?RuleResult
+type Rule = fn (mut p GuraParser) ?RuleResult
 
 // MatchResultType
-pub enum MatchResultType {
+enum MatchResultType {
 	useless_line
 	pair
 	comment_line
