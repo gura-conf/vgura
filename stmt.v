@@ -407,15 +407,8 @@ fn pair(mut gp GuraParser) ?RuleResult {
 
 	pos_before_pair := gp.pos
 
-	mut current_identation_level := 0
-
-	if indentation_match := gp.maybe_match(ws_with_indentation) {
-		current_identation_level = indentation_match as Any as int
-	} else {
-		if err !is none {
-			return err
-		}
-	}
+	indentation_match := gp.maybe_match(ws_with_indentation) ?
+	current_identation_level := indentation_match as Any as int
 
 	key_result := gp.match_rule(key) ?
 	any_key := key_result as Any
@@ -473,7 +466,7 @@ fn pair(mut gp GuraParser) ?RuleResult {
 			if indentation_level == current_identation_level {
 				return new_invalid_indentation_error('wrong level for parent with key $key_str')
 			} else if int(math.abs(current_identation_level - indentation_level)) != 4 {
-				return new_invalid_indentation_error('difference between different indentation levels must be 4')
+				return new_invalid_indentation_error('difference between different indentation levels must be 4 $current_identation_level $indentation_level')
 			}
 
 			if _ := gp.maybe_match(new_line) {

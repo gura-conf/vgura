@@ -1,36 +1,11 @@
 module main
 
-import math
-import gura_conf.vgura { Any, encode, parse }
+import os
+import vgura { encode, parse }
 
 fn main() {
-	data := map{
-		'inf':          Any(math.inf(1))
-		'complex_data': Any(map{
-			'text':              Any('value')
-			'more_complex_data': Any(map{
-				'number': Any(2.)
-			})
-		})
-	}
-
-	println(encode(data))
-
-	gura_str := '
-# This is a Gura document.
-title: "Gura Example"
-
-an_object:
-    username: "Stephen"
-    pass: "Hawking"
-    null_value: null
-    number_value: 6.0
-
-# Line breaks are OK when inside arrays
-hosts: [
-  "alpha",
-  "omega"
-]'.str()
+	file_path := os.join_path(@VMODROOT, 'example', 'example.ura')
+	gura_str := os.read_file(file_path) ?
 
 	if d := parse(gura_str) {
 		println('Parser finished successfully')

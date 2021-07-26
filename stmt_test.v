@@ -192,6 +192,127 @@ fn test_complex_type() {
 	}
 }
 
+fn test_complex_type_expression_1() {
+	mut gp := GuraParser{}
+
+	gp.init('
+# Apache configuration
+apache:
+    virtual_host: "10.10.10.4"
+    port: 81
+')
+	if result := complex_type(mut gp) {
+		expected := map{
+			'apache': Any(map{
+				'virtual_host': Any('10.10.10.4')
+				'port':         Any(81)
+			})
+		}
+
+		match_result := result as MatchResult
+		value := match_result.value as []Any
+		object := value[0] as map[string]Any
+		assert match_result.result_type == .expression
+		assert expected == object
+	} else {
+		panic(err)
+	}
+
+	gp.init('# This is a useless line')
+	if _ := complex_type(mut gp) {
+		panic('This should never happen')
+	} else {
+		assert err is none
+	}
+}
+
+fn test_complex_type_expression_2() {
+	mut gp := GuraParser{}
+
+	gp.init('
+# Nginx configuration
+nginx:
+    host: "127.0.0.1"
+    port: 80
+
+# Apache configuration
+apache:
+    virtual_host: "10.10.10.4"
+    port: 81
+')
+	if result := complex_type(mut gp) {
+		expected := map{
+			'nginx':  Any(map{
+				'host': Any('127.0.0.1')
+				'port': Any(80)
+			})
+			'apache': Any(map{
+				'virtual_host': Any('10.10.10.4')
+				'port':         Any(81)
+			})
+		}
+
+		match_result := result as MatchResult
+		value := match_result.value as []Any
+		object := value[0] as map[string]Any
+		assert match_result.result_type == .expression
+		assert expected == object
+	} else {
+		panic(err)
+	}
+
+	gp.init('# This is a useless line')
+	if _ := complex_type(mut gp) {
+		panic('This should never happen')
+	} else {
+		assert err is none
+	}
+}
+
+fn test_complex_type_expression_3() {
+	mut gp := GuraParser{}
+
+	gp.init('
+# Services configuration
+services:
+    nginx:
+        host: "127.0.0.1"
+        port: 80
+    apache:
+        virtual_host: "10.10.10.4"
+        port: 81
+')
+	if result := complex_type(mut gp) {
+		expected := map{
+			'services': Any(map{
+				'nginx':  Any(map{
+					'host': Any('127.0.0.1')
+					'port': Any(80)
+				})
+				'apache': Any(map{
+					'virtual_host': Any('10.10.10.4')
+					'port':         Any(81)
+				})
+			})
+		}
+
+		match_result := result as MatchResult
+		value := match_result.value as []Any
+		object := value[0] as map[string]Any
+		assert match_result.result_type == .expression
+		assert expected == object
+	} else {
+		panic(err)
+	}
+
+	gp.init('# This is a useless line')
+	if _ := complex_type(mut gp) {
+		panic('This should never happen')
+	} else {
+		assert err is none
+	}
+}
+
 fn test_variable_value() {
 	mut gp := GuraParser{}
 
