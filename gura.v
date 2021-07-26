@@ -2,7 +2,7 @@ module vgura
 
 import os
 
-pub struct GuraParser {
+struct GuraParser {
 	Parser
 mut:
 	variables          map[string]Any
@@ -11,7 +11,7 @@ mut:
 }
 
 // encode generates a gura string from a dictionary
-pub fn (gp GuraParser) encode(data map[string]Any, indentation_level int) string {
+fn (gp GuraParser) encode(data map[string]Any, indentation_level int) string {
 	mut result := ''
 	for key, value in data {
 		indentation := ' '.repeat(indentation_level * 4)
@@ -23,7 +23,7 @@ pub fn (gp GuraParser) encode(data map[string]Any, indentation_level int) string
 }
 
 // parse parses a text in gura format and returns a dict with all the parsed values
-pub fn (mut gp GuraParser) parse(text string) ?map[string]Any {
+fn (mut gp GuraParser) parse(text string) ?map[string]Any {
 	gp.init(text)
 	if result := gp.run() {
 		if !gp.is_end() {
@@ -37,7 +37,7 @@ pub fn (mut gp GuraParser) parse(text string) ?map[string]Any {
 }
 
 // get_text_with_imports gets final text taking in consideration imports in original text
-pub fn (mut gp GuraParser) get_text_with_imports(original_text string, parent_dir_path string) ?string {
+fn (mut gp GuraParser) get_text_with_imports(original_text string, parent_dir_path string) ?string {
 	gp.init(original_text)
 	gp.compute_imports(parent_dir_path) ?
 	return gp.text
@@ -98,7 +98,7 @@ fn (mut gp GuraParser) compute_imports(parent_dir_path string) ? {
 }
 
 // get_var_name gets a variable name
-pub fn (mut gp GuraParser) get_var_name() ?string {
+fn (mut gp GuraParser) get_var_name() ?string {
 	mut var_name := ''
 
 	for {
@@ -116,7 +116,7 @@ pub fn (mut gp GuraParser) get_var_name() ?string {
 }
 
 // get_var_value gets a variable value for a specific key from defined variables in file or as environment variable
-pub fn (mut gp GuraParser) get_var_value(key string) ?Any {
+fn (mut gp GuraParser) get_var_value(key string) ?Any {
 	if key in gp.variables {
 		return gp.variables[key]
 	}

@@ -8,7 +8,7 @@ pub:
 	pos  int
 }
 
-pub fn new_parse_error(pos int, line int, msg string) IError {
+fn new_parse_error(pos int, line int, msg string) IError {
 	return &ParseError{
 		pos: pos
 		line: line
@@ -30,7 +30,7 @@ pub:
 	msg  string
 }
 
-pub fn new_duplicated_variable_error(msg string) IError {
+fn new_duplicated_variable_error(msg string) IError {
 	return &DuplicatedImportError{
 		msg: msg
 	}
@@ -42,7 +42,7 @@ pub:
 	msg  string
 }
 
-pub fn new_duplicated_import_error(msg string) IError {
+fn new_duplicated_import_error(msg string) IError {
 	return &DuplicatedVariableError{
 		msg: msg
 	}
@@ -54,7 +54,7 @@ pub:
 	msg  string
 }
 
-pub fn new_file_not_found_error(msg string) IError {
+fn new_file_not_found_error(msg string) IError {
 	return &FileNotFoundError{
 		msg: msg
 	}
@@ -66,7 +66,7 @@ pub:
 	msg  string
 }
 
-pub fn new_invalid_indentation_error(msg string) IError {
+fn new_invalid_indentation_error(msg string) IError {
 	return &InvalidIndentationError{
 		msg: msg
 	}
@@ -79,7 +79,7 @@ pub:
 	msg  string
 }
 
-pub fn new_variable_not_defined_error(key string, msg string) IError {
+fn new_variable_not_defined_error(key string, msg string) IError {
 	return &VariableNotDefinedError{
 		key: key
 		msg: msg

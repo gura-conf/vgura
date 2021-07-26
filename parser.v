@@ -3,7 +3,7 @@ module vgura
 import math.util
 
 // Base parser
-pub struct Parser {
+struct Parser {
 mut:
 	cache map[string][]string
 	len   int
@@ -13,12 +13,12 @@ mut:
 }
 
 // is_end returns if the parser has reached the end of file
-pub fn (p Parser) is_end() bool {
+fn (p Parser) is_end() bool {
 	return p.pos >= p.len
 }
 
 // split_char_ranges returns a list of chars from a list of chars which could contain char ranges (i.e. a-z or 0-9)
-pub fn split_char_ranges(chars string) ?[]string {
+fn split_char_ranges(chars string) ?[]string {
 	mut result := []string{}
 	mut idx := 0
 	mut len := chars.len
@@ -42,7 +42,7 @@ pub fn split_char_ranges(chars string) ?[]string {
 }
 
 // get_char_ranges returns a list of chars from a list of chars which could contain char ranges (i.e. a-z or 0-9)
-pub fn (mut p Parser) get_char_ranges(chars string) ?[]string {
+fn (mut p Parser) get_char_ranges(chars string) ?[]string {
 	if chars in p.cache {
 		return p.cache[chars]
 	}
@@ -54,7 +54,7 @@ pub fn (mut p Parser) get_char_ranges(chars string) ?[]string {
 }
 
 // char matches a list of specific chars and returns the first that matched
-pub fn (mut p Parser) char(chars string) ?string {
+fn (mut p Parser) char(chars string) ?string {
 	if p.is_end() {
 		expected_str := if chars == '' { 'character' } else { '[$chars]' }
 		return new_parse_error(p.pos + 1, p.line, 'Expected $expected_str but got end of string')
@@ -86,12 +86,12 @@ pub fn (mut p Parser) char(chars string) ?string {
 }
 
 // maybe_char like char but returns none instead of ParseError
-pub fn (mut p Parser) maybe_char(chars string) ?string {
+fn (mut p Parser) maybe_char(chars string) ?string {
 	return p.char(chars) or { return if err is ParseError { none } else { err } }
 }
 
 // keyword matches specific keywords
-pub fn (mut p Parser) keyword(keywords ...string) ?string {
+fn (mut p Parser) keyword(keywords ...string) ?string {
 	if p.is_end() {
 		return new_parse_error(p.pos + 1, p.line, 'Expected ${keywords.join(',')} but got end of string')
 	}
@@ -116,11 +116,11 @@ pub fn (mut p Parser) keyword(keywords ...string) ?string {
 }
 
 // maybe_keyword like keyword but returns none instead of ParseError
-pub fn (mut p Parser) maybe_keyword(keywords ...string) ?string {
+fn (mut p Parser) maybe_keyword(keywords ...string) ?string {
 	return p.keyword(...keywords) or { return if err is ParseError { none } else { err } }
 }
 
-pub fn (mut p GuraParser) match_rule(rules ...Rule) ?RuleResult {
+fn (mut p GuraParser) match_rule(rules ...Rule) ?RuleResult {
 	mut last_error_pos := -1
 	mut last_error := IError(voidptr(0))
 	mut last_error_rules := []Rule{}
@@ -160,6 +160,6 @@ pub fn (mut p GuraParser) match_rule(rules ...Rule) ?RuleResult {
 }
 
 // maybe_match like match_rule but returns none instead of ParseError
-pub fn (mut p GuraParser) maybe_match(rules ...Rule) ?RuleResult {
+fn (mut p GuraParser) maybe_match(rules ...Rule) ?RuleResult {
 	return p.match_rule(...rules) or { return if err is ParseError { none } else { err } }
 }

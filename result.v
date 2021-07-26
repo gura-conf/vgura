@@ -64,7 +64,7 @@ struct MatchResult {
 }
 
 // new_match_result_with_value returns a result with value
-pub fn new_match_result_with_value(result_type MatchResultType, value Any) RuleResult {
+fn new_match_result_with_value(result_type MatchResultType, value Any) RuleResult {
 	return MatchResult{
 		result_type: result_type
 		value: value
@@ -72,17 +72,17 @@ pub fn new_match_result_with_value(result_type MatchResultType, value Any) RuleR
 }
 
 // new_match_result returns a result without value
-pub fn new_match_result(result_type MatchResultType) RuleResult {
+fn new_match_result(result_type MatchResultType) RuleResult {
 	return MatchResult{
 		result_type: result_type
 	}
 }
 
-pub fn (mr MatchResult) str() string {
+fn (mr MatchResult) str() string {
 	return '$mr.result_type -> $mr.value'
 }
 
-pub fn (value Any) str_with_indentation(indentation_level int) string {
+fn (value Any) str_with_indentation(indentation_level int) string {
 	return match value {
 		[]Any {
 			'[${value.map(it.str_with_indentation(indentation_level)).join(', ')}]'
