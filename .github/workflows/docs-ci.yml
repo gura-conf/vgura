@@ -23,8 +23,8 @@ jobs:
       - name: Move vgura source code to V Modules
         run: |
           mkdir ~/.vmodules/gura_conf
-          mv ./vgura ~/.vmodules
+          mv ./vgura ~/.vmodules/gura_conf
       - name: Validate docs
         run: |
-          cd vgura
+          cd ~/.vmodules/gura_conf/vgura
           v check-md .
