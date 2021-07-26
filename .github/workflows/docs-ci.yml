@@ -22,6 +22,6 @@ jobs:
         run: v doctor
       - name: Validate docs
         run: |
-          v install gura-conf.vgura
+          v install ulises-jeremias.vgura
           cd vgura
           v check-md .

@@ -8,6 +8,52 @@
 
 </div>
 
+```v ignore
+>>> import gura_conf.vgura { parse, encode }
+>>> data := parse('text: "Hello World!"') ?
+>>> println(data)
+{'text': gura_conf.vgura.Any('Hello World!')}
+>>> encode(data)
+text: Hello World!
+>>>
+```
+
+## Installation
+
+**Via vpm**
+
+```sh
+$ v install gura-conf.vgura
+```
+
+**Via [vpkg](https://github.com/v-pkg/vpkg)**
+
+```sh
+$ vpkg get https://github.com/gura-conf/vgura
+```
+
+Done. Installation completed.
+
+## Testing
+
+To test the module, just type the following command:
+
+```sh
+$ ./bin/test # execute `./bin/test -h` to know more about the test command
+```
+
+## License
+
+[MIT](LICENSE)
+
+## Contributors
+
+<a href="https://github.com/gura-conf/vgura/contributors">
+  <img src="https://contrib.rocks/image?repo=gura-conf/vgura"/>
+</a>
+
+Made with [contributors-img](https://contrib.rocks).
+
 [workflowbadge]: https://github.com/gura-conf/vgura/workflows/Build%20and%20Test%20with%20deps/badge.svg
 [validatedocsbadge]: https://github.com/gura-conf/vgura/workflows/Validate%20Docs/badge.svg
 [licensebadge]: https://img.shields.io/badge/License-MIT-blue.svg

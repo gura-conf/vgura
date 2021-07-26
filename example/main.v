@@ -1,7 +1,7 @@
 module main
 
 import os
-import vgura { encode, parse }
+import gura_conf.vgura { encode, parse }
 
 fn main() {
 	file_path := os.join_path(@VMODROOT, 'example', 'example.ura')
