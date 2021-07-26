@@ -57,6 +57,33 @@
 <a href="#">Changelog</a> |
 <a href="https://github.com/gura-conf/vgura/blob/main/CONTRIBUTING.md">Contributing</a></p>
 </div>
+<pre><code class="language-v">&gt;&gt;&gt; import gura_conf.vgura { parse, encode }
+&gt;&gt;&gt; data := parse('text: &quot;Hello World!&quot;') ?
+&gt;&gt;&gt; println(data)
+{'text': gura_conf.vgura.Any('Hello World!')}
+&gt;&gt;&gt; encode(data)
+text: Hello World!
+&gt;&gt;&gt;
+</code></pre>
+<h2>Installation</h2>
+<p><strong>Via vpm</strong></p>
+<pre><code class="language-sh">$ v install gura-conf.vgura
+</code></pre>
+<p><strong>Via <a href="https://github.com/v-pkg/vpkg">vpkg</a></strong></p>
+<pre><code class="language-sh">$ vpkg get https://github.com/gura-conf/vgura
+</code></pre>
+<p>Done. Installation completed.</p>
+<h2>Testing</h2>
+<p>To test the module, just type the following command:</p>
+<pre><code class="language-sh">$ ./bin/test # execute `./bin/test -h` to know more about the test command
+</code></pre>
+<h2>License</h2>
+<p><a href="LICENSE">MIT</a></p>
+<h2>Contributors</h2>
+<a href="https://github.com/gura-conf/vgura/contributors">
+  <img src="https://contrib.rocks/image?repo=gura-conf/vgura"/>
+</a>
+<p>Made with <a href="https://contrib.rocks">contributors-img</a>.</p>
 
 </section>
 
@@ -318,7 +345,7 @@
 </section>
 
 						<div class="footer">
-							Powered by vdoc. Generated on: 26 Jul 2021 05:44:30
+							Powered by vdoc. Generated on: 26 Jul 2021 05:56:02
 						</div>
 					</div>
 					
