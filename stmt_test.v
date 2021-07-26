@@ -285,11 +285,11 @@ services:
 	if result := complex_type(mut gp) {
 		expected := map{
 			'services': Any(map{
-				'local_nginx':  Any(map{
+				'local_nginx': Any(map{
 					'host': Any('127.0.0.1')
 					'port': Any(80)
 				})
-				'apache': Any(map{
+				'apache':      Any(map{
 					'virtual_host': Any('10.10.10.4')
 					'port':         Any(81)
 				})
