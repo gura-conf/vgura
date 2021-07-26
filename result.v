@@ -116,7 +116,7 @@ pub fn (value Any) str_with_indentation(indentation_level int) string {
 			value.str()
 		}
 		string {
-			'"$value.str()"'
+			value
 		}
 		u16 {
 			value.str()
