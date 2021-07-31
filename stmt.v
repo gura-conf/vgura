@@ -167,7 +167,7 @@ fn primitive_type(mut gp GuraParser) ?RuleResult {
 			return err
 		}
 	}
-	return gp.match_rule(null, boolean, basic_string, literal_string, number, variable_value)
+	return gp.match_rule(null, empty, boolean, basic_string, literal_string, number, variable_value)
 }
 
 // complex_type matches with a list or another complex expression
@@ -504,12 +504,20 @@ fn pair(mut gp GuraParser) ?RuleResult {
 	return none
 }
 
-// null consumes null keyword and return Null{}
+// null consumes `null` keyword and returns Null{}
 fn null(mut gp GuraParser) ?RuleResult {
 	rule_debug(@FN)
 
 	gp.keyword('null') ?
 	return new_match_result_with_value(.primitive, Null{})
+}
+
+// empty consumes `empty` keyword and returns an empty map{}
+fn empty(mut gp GuraParser) ?RuleResult {
+	rule_debug(@FN)
+
+	gp.keyword('empty') ?
+	return new_match_result_with_value(.primitive, map[string]Any{})
 }
 
 // boolean parses boolean value

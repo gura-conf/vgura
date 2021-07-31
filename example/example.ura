@@ -1,4 +1,4 @@
-import "nan.ura"
+import "example/nan.ura"
 
 a_string: "test string"
 int1: +99
@@ -58,6 +58,9 @@ nested_mixed_array: [ [ 1, 2 ], ["a", "b", "c"] ]
 $var: 2.8
 null_value: $var
 
+# Empty object
+empty_single: empty
+
 # Object
 services:
     local_nginx:
@@ -97,6 +100,7 @@ $my_integer_var: 8080
 my_server:
     host: $my_string_var
     port: $my_integer_var
+    empty_nested: empty
     native_auth: true
 
 $name: "Gura"
