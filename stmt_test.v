@@ -438,6 +438,28 @@ fn test_null() {
 	}
 }
 
+fn test_empty() {
+	mut gp := GuraParser{}
+
+	expected_value := map[string]Any{}
+	gp.init('empty')
+	if result := empty(mut gp) {
+		match_result := result as MatchResult
+		value := match_result.value as map[string]Any
+		assert match_result.result_type == .primitive
+		assert value == expected_value
+	} else {
+		panic(err)
+	}
+
+	gp.init('# This is a useless line')
+	if _ := empty(mut gp) {
+		panic('This should never happen')
+	} else {
+		assert err !is none
+	}
+}
+
 fn test_boolean() {
 	mut gp := GuraParser{}
 
@@ -460,7 +482,7 @@ fn test_boolean() {
 	}
 }
 
-fn test_number() {
+fn test_f64() {
 	mut gp := GuraParser{}
 
 	expected_value := 9.78
@@ -468,6 +490,94 @@ fn test_number() {
 	if result := number(mut gp) {
 		match_result := result as MatchResult
 		value := match_result.value as f64
+		assert match_result.result_type == .primitive
+		assert value == expected_value
+	} else {
+		panic(err)
+	}
+
+	gp.init('# This is a useless line')
+	if _ := number(mut gp) {
+		panic('This should never happen')
+	} else {
+		assert err !is none
+	}
+}
+
+fn test_int_1() {
+	mut gp := GuraParser{}
+
+	expected_value := 9
+	gp.init('$expected_value.str()')
+	if result := number(mut gp) {
+		match_result := result as MatchResult
+		value := match_result.value as int
+		assert match_result.result_type == .primitive
+		assert value == expected_value
+	} else {
+		panic(err)
+	}
+
+	gp.init('# This is a useless line')
+	if _ := number(mut gp) {
+		panic('This should never happen')
+	} else {
+		assert err !is none
+	}
+}
+
+fn test_int_2() {
+	mut gp := GuraParser{}
+
+	expected_value := 1000
+	gp.init('1_000')
+	if result := number(mut gp) {
+		match_result := result as MatchResult
+		value := match_result.value as int
+		assert match_result.result_type == .primitive
+		assert value == expected_value
+	} else {
+		panic(err)
+	}
+
+	gp.init('# This is a useless line')
+	if _ := number(mut gp) {
+		panic('This should never happen')
+	} else {
+		assert err !is none
+	}
+}
+
+fn test_int_3() {
+	mut gp := GuraParser{}
+
+	expected_value := 5349221
+	gp.init('53_49_221')
+	if result := number(mut gp) {
+		match_result := result as MatchResult
+		value := match_result.value as int
+		assert match_result.result_type == .primitive
+		assert value == expected_value
+	} else {
+		panic(err)
+	}
+
+	gp.init('# This is a useless line')
+	if _ := number(mut gp) {
+		panic('This should never happen')
+	} else {
+		assert err !is none
+	}
+}
+
+fn test_hex() {
+	mut gp := GuraParser{}
+
+	expected_value := int(0xDEADBEEF)
+	gp.init('$expected_value.str()')
+	if result := number(mut gp) {
+		match_result := result as MatchResult
+		value := match_result.value as int
 		assert match_result.result_type == .primitive
 		assert value == expected_value
 	} else {
