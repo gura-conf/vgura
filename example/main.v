@@ -9,7 +9,9 @@ fn main() {
 
 	if d := parse(gura_str) {
 		println('Parser finished successfully')
-		println('')
+		println('d.str():')
+		println(d)
+		println('encode(d):')
 		println(encode(d))
 	} else {
 		if err !is none {
