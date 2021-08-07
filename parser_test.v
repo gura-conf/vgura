@@ -1,4 +1,4 @@
-module vgura
+module gura
 
 fn test_split_char_ranges() {
 	chars := '0-9A-Za-z_-'

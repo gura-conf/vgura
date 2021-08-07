@@ -1,4 +1,4 @@
-module vgura
+module gura
 
 fn test_comment() {
 	mut gp := GuraParser{}

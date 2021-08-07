@@ -1,4 +1,4 @@
-module vgura
+module gura
 
 pub struct ParseError {
 pub:

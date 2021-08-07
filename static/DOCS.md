@@ -9,10 +9,10 @@
 </div>
 
 ```v ignore
->>> import gura_conf.vgura { parse, encode }
+>>> import gura { parse, encode }
 >>> data := parse('text: "Hello World!"') ?
 >>> println(data)
-{'text': gura_conf.vgura.Any('Hello World!')}
+{'text': gura.Any('Hello World!')}
 >>> encode(data)
 text: "Hello World!"
 ```
@@ -22,7 +22,7 @@ text: "Hello World!"
 **Via vpm**
 
 ```sh
-$ v install gura-conf.vgura
+$ v install gura
 ```
 
 **Via [vpkg](https://github.com/v-pkg/vpkg)**

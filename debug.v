@@ -1,4 +1,4 @@
-module vgura
+module gura
 
 // rule_debug is a helper function to debug parser calls
 [inline]
