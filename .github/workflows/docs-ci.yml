@@ -21,10 +21,8 @@ jobs:
       - name: V doctor
         run: v doctor
       - name: Move vgura source code to V Modules
-        run: |
-          mkdir ~/.vmodules/gura_conf
-          mv ./vgura ~/.vmodules/gura_conf
+        run: mv ./vgura ~/.vmodules/gura
       - name: Validate docs
         run: |
-          cd ~/.vmodules/gura_conf/vgura
+          cd ~/.vmodules/gura
           v check-md .
