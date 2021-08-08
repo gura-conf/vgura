@@ -20,6 +20,6 @@ jobs:
       - name: V doctor
         run: v doctor
       - name: Move vgura source code to V Modules
-        run: mv ./vgura ~/.vmodules
+        run: mv ./vgura ~/.vmodules/gura
       - name: Execute Tests
-        run: ~/.vmodules/vgura/bin/test
+        run: ~/.vmodules/gura/bin/test
