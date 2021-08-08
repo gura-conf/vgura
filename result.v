@@ -12,7 +12,7 @@ const (
 	key_acceptable_chars    = '0-9A-Za-z_-'
 
 	// special characters to be escaped
-	escape_sequences        = map{
+	escape_sequences        = {
 		'b':  '\b'
 		'f':  '\f'
 		'n':  '\n'
