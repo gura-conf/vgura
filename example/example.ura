@@ -73,16 +73,16 @@ services:
 # Mixed-type arrays
 numbers: [ 0.1, 0.2, 0.5, 1, 2, 5 ]
 # This case is not working yet
-# tango_singers: [
-#     user1:
-#         name: "Carlos"
-#         surname: "Gardel"
-#         year_of_birth: 1890,
-#     user2:
-#         name: "Aníbal"
-#         surname: "Troilo"
-#         year_of_birth: 1914
-# ]
+tango_singers: [
+    user1:
+        name: "Carlos"
+        surname: "Gardel"
+        year_of_birth: 1890,
+    user2:
+        name: "Aníbal"
+        surname: "Troilo"
+        year_of_birth: 1914
+]
 
 integers2: [
   1, 2, 3

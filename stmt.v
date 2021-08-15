@@ -464,6 +464,12 @@ fn pair(mut gp GuraParser) ?RuleResult {
 				return new_invalid_indentation_error('difference between different indentation levels must be 4 $current_identation_level $indentation_level')
 			}
 
+			// Prevents issues with indentation inside a list that break objects
+			if object_values is []Any {
+				gp.remove_last_indentation_level()
+				gp.indentation_levels << current_identation_level
+			}
+
 			if _ := gp.maybe_match(new_line) {
 				// ignore this case for now
 			} else {
@@ -471,9 +477,16 @@ fn pair(mut gp GuraParser) ?RuleResult {
 					return err
 				}
 			}
+
 			return new_match_result_with_value(.pair, [any_key, object_values,
 				Any(current_identation_level),
 			])
+		}
+
+		// Prevents issues with indentation inside a list that break objects
+		if result.value is []Any {
+			gp.remove_last_indentation_level()
+			gp.indentation_levels << current_identation_level
 		}
 
 		if _ := gp.maybe_match(new_line) {
@@ -483,6 +496,7 @@ fn pair(mut gp GuraParser) ?RuleResult {
 				return err
 			}
 		}
+
 		return new_match_result_with_value(.pair, [any_key, result.value,
 			Any(current_identation_level),
 		])
