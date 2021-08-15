@@ -422,13 +422,6 @@ fn pair(mut gp GuraParser) ?RuleResult {
 			return err
 		}
 	}
-	if _ := gp.maybe_match(new_line) {
-		// ignore this case for now
-	} else {
-		if err !is none {
-			return err
-		}
-	}
 
 	// check if indentation is divisible by 4
 	if current_identation_level % 4 != 0 {
