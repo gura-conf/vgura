@@ -58,11 +58,11 @@
 <a href="#">Changelog</a> |
 <a href="https://github.com/gura-conf/vgura/blob/main/CONTRIBUTING.md">Contributing</a></p>
 </div>
-<pre><code class="language-v">&gt;&gt;&gt; import gura { parse, encode }
-&gt;&gt;&gt; data := parse('text: &quot;Hello World!&quot;') ?
+<pre><code class="language-v">&gt;&gt;&gt; import gura { raw_parse, raw_encode }
+&gt;&gt;&gt; data := raw_parse('text: &quot;Hello World!&quot;') ?
 &gt;&gt;&gt; println(data)
 {'text': gura.Any('Hello World!')}
-&gt;&gt;&gt; encode(data)
+&gt;&gt;&gt; raw_encode(data)
 text: &quot;Hello World!&quot;
 </code></pre>
 <h2>Installation</h2>
@@ -253,7 +253,7 @@ text: &quot;Hello World!&quot;
 </section>
 
 						<div class="footer">
-							Powered by vdoc. Generated on: 27 Aug 2021 06:35:31
+							Powered by vdoc. Generated on: 27 Aug 2021 06:36:47
 						</div>
 					</div>
 					<div class="doc-toc"><ul><li class="open"><a href="#readme_gura">README</a></li>
