@@ -91,7 +91,7 @@ fn test_gura_import() {
 	gp.init('import "$file_name"')
 	if result := gura_import(mut gp) {
 		match_result := result as MatchResult
-		file_to_import := match_result.value as string
+		file_to_import := match_result.value.str()
 		assert match_result.result_type == .import_line
 		assert file_to_import == file_name
 	} else {
@@ -133,7 +133,7 @@ fn test_any_type() {
 	gp.init('$number')
 	if result := any_type(mut gp) {
 		match_result := result as MatchResult
-		value := match_result.value as f64
+		value := match_result.value.f64()
 		assert match_result.result_type == .primitive
 		assert value == number
 	} else {
@@ -155,7 +155,7 @@ fn test_primitive() {
 	gp.init('$number')
 	if result := primitive_type(mut gp) {
 		match_result := result as MatchResult
-		value := match_result.value as f64
+		value := match_result.value.f64()
 		assert match_result.result_type == .primitive
 		assert value == number
 	} else {
@@ -177,7 +177,7 @@ fn test_complex_type() {
 	gp.init('["value1", "value2", "value3"]')
 	if result := complex_type(mut gp) {
 		match_result := result as MatchResult
-		value := match_result.value as []Any
+		value := match_result.value.arr()
 		assert match_result.result_type == .list
 		assert value == list
 	} else {
@@ -210,8 +210,8 @@ apache:
 		}
 
 		match_result := result as MatchResult
-		value := match_result.value as []Any
-		object := value[0] as map[string]Any
+		value := match_result.value.arr()
+		object := value[0].as_map()
 		assert match_result.result_type == .expression
 		assert expected == object
 	} else {
@@ -253,8 +253,8 @@ apache:
 		}
 
 		match_result := result as MatchResult
-		value := match_result.value as []Any
-		object := value[0] as map[string]Any
+		value := match_result.value.arr()
+		object := value[0].as_map()
 		assert match_result.result_type == .expression
 		assert expected == object
 	} else {
@@ -297,8 +297,8 @@ services:
 		}
 
 		match_result := result as MatchResult
-		value := match_result.value as []Any
-		object := value[0] as map[string]Any
+		value := match_result.value.arr()
+		object := value[0].as_map()
 		assert match_result.result_type == .expression
 		assert expected == object
 	} else {
@@ -347,7 +347,7 @@ fn test_variable() {
 		assert match_result.result_type == .variable
 
 		if value := gp.get_var_value('var') {
-			assert value as f64 == 9.4
+			assert value.f64() == 9.4
 		} else {
 			panic(err)
 		}
@@ -370,7 +370,7 @@ fn test_list() {
 	gp.init('["value1", "value2", "value3"]')
 	if result := list(mut gp) {
 		match_result := result as MatchResult
-		value := match_result.value as []Any
+		value := match_result.value.arr()
 		assert match_result.result_type == .list
 		assert value == values
 	} else {
@@ -419,9 +419,9 @@ fn test_key() {
 fn test_null() {
 	mut gp := GuraParser{}
 
-	expected_value := Null{}
+	expected_value := null
 	gp.init('$expected_value.str()')
-	if result := null(mut gp) {
+	if result := null_stmt(mut gp) {
 		match_result := result as MatchResult
 		value := match_result.value as Null
 		assert match_result.result_type == .primitive
@@ -431,7 +431,7 @@ fn test_null() {
 	}
 
 	gp.init('# This is a useless line')
-	if _ := null(mut gp) {
+	if _ := null_stmt(mut gp) {
 		panic('This should never happen')
 	} else {
 		assert err !is none
@@ -445,7 +445,7 @@ fn test_empty() {
 	gp.init('empty')
 	if result := empty(mut gp) {
 		match_result := result as MatchResult
-		value := match_result.value as map[string]Any
+		value := match_result.value.as_map()
 		assert match_result.result_type == .primitive
 		assert value == expected_value
 	} else {
@@ -467,7 +467,7 @@ fn test_boolean() {
 	gp.init('$expected_value.str()')
 	if result := boolean(mut gp) {
 		match_result := result as MatchResult
-		value := match_result.value as bool
+		value := match_result.value.bool()
 		assert match_result.result_type == .primitive
 		assert value == expected_value
 	} else {
@@ -489,7 +489,7 @@ fn test_f64() {
 	gp.init('$expected_value.str()')
 	if result := number(mut gp) {
 		match_result := result as MatchResult
-		value := match_result.value as f64
+		value := match_result.value.f64()
 		assert match_result.result_type == .primitive
 		assert value == expected_value
 	} else {
@@ -511,7 +511,7 @@ fn test_int_1() {
 	gp.init('$expected_value.str()')
 	if result := number(mut gp) {
 		match_result := result as MatchResult
-		value := match_result.value as int
+		value := match_result.value.int()
 		assert match_result.result_type == .primitive
 		assert value == expected_value
 	} else {
@@ -533,7 +533,7 @@ fn test_int_2() {
 	gp.init('1_000')
 	if result := number(mut gp) {
 		match_result := result as MatchResult
-		value := match_result.value as int
+		value := match_result.value.int()
 		assert match_result.result_type == .primitive
 		assert value == expected_value
 	} else {
@@ -555,7 +555,7 @@ fn test_int_3() {
 	gp.init('53_49_221')
 	if result := number(mut gp) {
 		match_result := result as MatchResult
-		value := match_result.value as int
+		value := match_result.value.int()
 		assert match_result.result_type == .primitive
 		assert value == expected_value
 	} else {
@@ -577,7 +577,7 @@ fn test_hex() {
 	gp.init('$expected_value.str()')
 	if result := number(mut gp) {
 		match_result := result as MatchResult
-		value := match_result.value as int
+		value := match_result.value.int()
 		assert match_result.result_type == .primitive
 		assert value == expected_value
 	} else {

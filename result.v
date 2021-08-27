@@ -27,17 +27,6 @@ const (
 	single_line_quote = '"'
 )
 
-// `Any` is a sum type that lists the possible types to be decoded and used.
-pub type Any = Null | []Any | bool | byte | f32 | f64 | i16 | i64 | i8 | int | map[string]Any |
-	string | u16 | u32 | u64
-
-// `Null` struct is a simple representation of the `null` value in GURA.
-pub struct Null {}
-
-pub fn (_ Null) str() string {
-	return 'null'
-}
-
 // RuleResult defines the return type for GuraParser.match_rule
 type RuleResult = Any | MatchResult
 
@@ -80,59 +69,4 @@ fn new_match_result(result_type MatchResultType) RuleResult {
 
 fn (mr MatchResult) str() string {
 	return '$mr.result_type -> $mr.value'
-}
-
-fn (value Any) str_with_indentation(indentation_level int) string {
-	return match value {
-		[]Any {
-			'[${value.map(it.str_with_indentation(indentation_level)).join(', ')}]'
-		}
-		map[string]Any {
-			if value.len == 0 {
-				'empty\n'
-			} else {
-				'\n${' '.repeat(indentation_level)}${encode_with_indentation(value,
-					indentation_level + 1)}'
-			}
-		}
-		bool {
-			value.str()
-		}
-		byte {
-			value.str()
-		}
-		f32 {
-			value.str()
-		}
-		f64 {
-			value.str()
-		}
-		i16 {
-			value.str()
-		}
-		i64 {
-			value.str()
-		}
-		i8 {
-			value.str()
-		}
-		int {
-			value.str()
-		}
-		string {
-			'"$value"'
-		}
-		u16 {
-			value.str()
-		}
-		u32 {
-			value.str()
-		}
-		u64 {
-			value.str()
-		}
-		Null {
-			value.str()
-		}
-	}
 }
