@@ -17,11 +17,11 @@
 </div>
 
 ```v ignore
->>> import gura { parse, encode }
->>> data := parse('text: "Hello World!"') ?
+>>> import gura { raw_parse, raw_encode }
+>>> data := raw_parse('text: "Hello World!"') ?
 >>> println(data)
 {'text': gura.Any('Hello World!')}
->>> encode(data)
+>>> raw_encode(data)
 text: "Hello World!"
 ```
 
