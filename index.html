@@ -43,7 +43,7 @@
 				<nav class="search hidden"></nav>
 				<nav class="content hidden">
 					<ul>
-						<li class="open active"><div class="menu-row"><a href="./gura.html">gura</a></div></li>
+						<li class="open active"><div class="menu-row"><a href="./gura.html">gura</a></div></li><li class="open"><div class="menu-row"><a href="./main.html">main</a></div></li>
 					</ul>
 				</nav>
 			</header>
@@ -106,18 +106,31 @@ text: &quot;Hello World!&quot;
 
 </section>
 						<section id="encode" class="doc-node">
-							<div class="title"><h2>fn encode <a href="#encode">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/gura-conf/vgura/blob/master/gura/gura.v#L176"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token function">encode</span><span class="token punctuation">(</span>data <span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span>Any<span class="token punctuation">)</span> <span class="token builtin">string</span></code></pre>
-<p>encode generates a Gura string from a dictionary</p>
-
-</section>
-						<section id="encode_with_indentation" class="doc-node">
-							<div class="title"><h2>fn encode_with_indentation <a href="#encode_with_indentation">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/gura-conf/vgura/blob/master/gura/gura.v#L181"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token function">encode_with_indentation</span><span class="token punctuation">(</span>data <span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span>Any<span class="token punctuation">,</span> indentation <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">string</span></code></pre>
-
+							<div class="title"><h2>fn encode <a href="#encode">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/gura-conf/vgura/blob/master/gura/serialize.v#L29"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> encode<span class="token operator"><</span><span class="token builtin">T</span><span class="token operator">></span><span class="token punctuation">(</span>typ <span class="token builtin">T</span><span class="token punctuation">)</span> <span class="token builtin">string</span></code></pre>
+<p>encode is a generic function that encodes a type into a gura string.</p>
 
 </section>
 						<section id="parse" class="doc-node">
-							<div class="title"><h2>fn parse <a href="#parse">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/gura-conf/vgura/blob/master/gura/gura.v#L170"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token function">parse</span><span class="token punctuation">(</span>text <span class="token builtin">string</span><span class="token punctuation">)</span> ?<span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span>Any</code></pre>
-<p>parse parses a text in Gura format</p>
+							<div class="title"><h2>fn parse <a href="#parse">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/gura-conf/vgura/blob/master/gura/serialize.v#L21"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> parse<span class="token operator"><</span><span class="token builtin">T</span><span class="token operator">></span><span class="token punctuation">(</span>src <span class="token builtin">string</span><span class="token punctuation">)</span> ?<span class="token builtin">T</span></code></pre>
+<p>parse is a generic function that parses a gura string into the target type.</p>
+
+</section>
+						<section id="raw_encode" class="doc-node">
+							<div class="title"><h2>fn raw_encode <a href="#raw_encode">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/gura-conf/vgura/blob/master/gura/serialize.v#L15"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token function">raw_encode</span><span class="token punctuation">(</span>data <span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span>Any<span class="token punctuation">)</span> <span class="token builtin">string</span></code></pre>
+<p>raw_encode generates a Gura string from a dictionary</p>
+
+</section>
+						<section id="raw_parse" class="doc-node">
+							<div class="title"><h2>fn raw_parse <a href="#raw_parse">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/gura-conf/vgura/blob/master/gura/serialize.v#L9"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token function">raw_parse</span><span class="token punctuation">(</span>text <span class="token builtin">string</span><span class="token punctuation">)</span> ?<span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span>Any</code></pre>
+<p>raw_parse parses a text in Gura format</p>
+
+</section>
+						<section id="Serializable" class="doc-node">
+							<div class="title"><h2>interface Serializable <a href="#Serializable">#</a></h2><a class="link" rel="noreferrer" target="_blank" href="https://github.com/gura-conf/vgura/blob/master/gura/serialize.v#L3"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></a></div><pre class="signature"><code><span class="token keyword">interface</span> <span class="token symbol">Serializable</span> <span class="token punctuation">{</span>
+	<span class="token function">from_gura</span><span class="token punctuation">(</span>f <span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span>Any<span class="token punctuation">)</span>
+	<span class="token function">to_gura</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span>Any
+<span class="token punctuation">}</span></code></pre>
+
 
 </section>
 						<section id="Any" class="doc-node">
@@ -240,10 +253,61 @@ text: &quot;Hello World!&quot;
 </section>
 
 						<div class="footer">
-							Powered by vdoc. Generated on: 27 Aug 2021 05:54:50
+							Powered by vdoc. Generated on: 27 Aug 2021 06:34:51
 						</div>
 					</div>
-					
+					<div class="doc-toc"><ul><li class="open"><a href="#readme_gura">README</a></li>
+<li class="open"><a href="#Constants">Constants</a></li>
+<li class="open"><a href="#encode">fn encode</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#parse">fn parse</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#raw_encode">fn raw_encode</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#raw_parse">fn raw_parse</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#Serializable">interface Serializable</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#Any">type Any</a>        <ul>
+<li><a href="#Any.str">fn str</a></li>
+<li><a href="#Any.as_map">fn as_map</a></li>
+<li><a href="#Any.int">fn int</a></li>
+<li><a href="#Any.i64">fn i64</a></li>
+<li><a href="#Any.u64">fn u64</a></li>
+<li><a href="#Any.f32">fn f32</a></li>
+<li><a href="#Any.f64">fn f64</a></li>
+<li><a href="#Any.arr">fn arr</a></li>
+<li><a href="#Any.bool">fn bool</a></li>
+</ul>
+</li>
+<li class="open"><a href="#DuplicatedImportError">struct DuplicatedImportError</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#DuplicatedVariableError">struct DuplicatedVariableError</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#FileNotFoundError">struct FileNotFoundError</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#InvalidIndentationError">struct InvalidIndentationError</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#Null">struct Null</a>        <ul>
+<li><a href="#Null.str">fn str</a></li>
+</ul>
+</li>
+<li class="open"><a href="#ParseError">struct ParseError</a>        <ul>
+</ul>
+</li>
+<li class="open"><a href="#VariableNotDefinedError">struct VariableNotDefinedError</a>        <ul>
+</ul>
+</li>
+</ul></div>
 				</div>
 			</div>
 		</div>
