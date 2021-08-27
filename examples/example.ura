@@ -1,4 +1,4 @@
-import "example/nan.ura"
+import "examples/nan.ura"
 
 a_string: "test string"
 int1: +99

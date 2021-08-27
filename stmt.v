@@ -167,7 +167,8 @@ fn primitive_type(mut gp GuraParser) ?RuleResult {
 			return err
 		}
 	}
-	return gp.match_rule(null_stmt, empty, boolean, basic_string, literal_string, number, variable_value)
+	return gp.match_rule(null_stmt, empty, boolean, basic_string, literal_string, number,
+		variable_value)
 }
 
 // complex_type matches with a list or another complex expression

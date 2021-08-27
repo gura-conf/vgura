@@ -165,20 +165,3 @@ fn (mut gp GuraParser) remove_last_indentation_level() {
 		gp.indentation_levels.pop()
 	}
 }
-
-// parse parses a text in Gura format
-pub fn parse(text string) ?map[string]Any {
-	mut gp := GuraParser{}
-	return gp.parse(text)
-}
-
-// encode generates a Gura string from a dictionary
-pub fn encode(data map[string]Any) string {
-	mut gp := GuraParser{}
-	return gp.encode(data, 0)
-}
-
-pub fn encode_with_indentation(data map[string]Any, indentation int) string {
-	mut gp := GuraParser{}
-	return gp.encode(data, indentation)
-}
