@@ -72,7 +72,7 @@ services:
 
 # Mixed-type arrays
 numbers: [ 0.1, 0.2, 0.5, 1, 2, 5 ]
-# This case is not working yet
+# Array of objects
 tango_singers: [
     user1:
         name: "Carlos"
