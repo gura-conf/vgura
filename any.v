@@ -28,6 +28,28 @@ pub fn (_ Null) str() string {
 	return 'null'
 }
 
+pub fn (m map[string]Any) value(key string) ?Any {
+	// return m[key] ?
+	key_split := key.split('.')
+	// util.printdbg(@MOD + '.' + @STRUCT + '.' + @FN, ' getting "${key_split[0]}"')
+	if key_split[0] in m.keys() {
+		value := m[key_split[0]] or {
+			return error(@MOD + '.' + @STRUCT + '.' + @FN + ' key "$key" does not exist')
+		}
+		// `match` isn't currently very suitable for these types of sum type constructs...
+		if value is map[string]Any {
+			nm := (value as map[string]Any)
+			next_key := key_split[1..].join('.')
+			if next_key == '' {
+				return value
+			}
+			return nm.value(next_key)
+		}
+		return value
+	}
+	return error(@MOD + '.' + @STRUCT + '.' + @FN + ' key "$key" does not exist')
+}
+
 // str returns the string representation of the `Any` type.
 pub fn (f Any) str() string {
 	if f is string {

@@ -21,7 +21,7 @@ pub fn (mut n Nginx) from_gura(obj map[string]gura.Any) {
 
 pub fn (p Nginx) to_gura() map[string]gura.Any {
 	return {
-		'host': gura.Any(p.host),
+		'host': gura.Any(p.host)
 		'port': gura.Any(p.port)
 	}
 }
@@ -57,6 +57,9 @@ fn example() ? {
 	println('Parser finished successfully')
 	println('d.str():')
 	println(d)
+	println()
+	println()
+	println('Nginx HOST: ${d.value('services.local_nginx.host') ?}')
 	println('')
 	println('raw_encode(d):')
 	println(gura.raw_encode(d))
