@@ -57,10 +57,11 @@ fn example() ? {
 	println('Parser finished successfully')
 	println('d.str():')
 	println(d)
-	println()
-	println()
+	println('')
+	println('')
 	println('Nginx HOST: ${d.value('services.local_nginx.host') ?}')
 	println('')
+	println(d.to_json())
 	println('raw_encode(d):')
 	println(gura.raw_encode(d))
 

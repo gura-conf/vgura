@@ -50,6 +50,58 @@ pub fn (m map[string]Any) value(key string) ?Any {
 	return error(@MOD + '.' + @STRUCT + '.' + @FN + ' key "$key" does not exist')
 }
 
+pub fn (a []Any) as_strings() []string {
+	mut sa := []string{}
+	for any in a {
+		sa << any.string()
+	}
+	return sa
+}
+
+// to_json returns `Any` as a JSON encoded string.
+pub fn (a map[string]Any) to_json() string {
+	mut str := '{'
+	for key, val in a {
+		str += ' "$key": $val.to_json(),'
+	}
+	str = str.trim_right(',')
+	str += ' }'
+	return str
+}
+
+// to_json returns `Any` as a JSON encoded string.
+pub fn (a Any) to_json() string {
+	match a {
+		Null {
+			return 'null'
+		}
+		string {
+			return '"$a.str()"'
+		}
+		map[string]Any {
+			mut str := '{'
+			for key, val in a {
+				str += ' "$key": $val.to_json(),'
+			}
+			str = str.trim_right(',')
+			str += ' }'
+			return str
+		}
+		[]Any {
+			mut str := '['
+			for val in a {
+				str += ' $val.to_json(),'
+			}
+			str = str.trim_right(',')
+			str += ' ]'
+			return str
+		}
+		else {
+			return a.str()
+		}
+	}
+}
+
 // str returns the string representation of the `Any` type.
 pub fn (f Any) str() string {
 	if f is string {
@@ -72,6 +124,14 @@ pub fn (f Any) as_map() map[string]Any {
 	}
 	return {
 		'0': f
+	}
+}
+
+// string returns `Any` as a string.
+pub fn (a Any) string() string {
+	match a {
+		string { return a as string }
+		else { return a.str() }
 	}
 }
 
