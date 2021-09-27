@@ -5,8 +5,21 @@ pub const (
 )
 
 // `Any` is a sum type that lists the possible types to be decoded and used.
-pub type Any = Null | []Any | bool | byte | f32 | f64 | i16 | i64 | i8 | int | map[string]Any |
-	string | u16 | u32 | u64
+pub type Any = Null
+	| []Any
+	| bool
+	| byte
+	| f32
+	| f64
+	| i16
+	| i64
+	| i8
+	| int
+	| map[string]Any
+	| string
+	| u16
+	| u32
+	| u64
 
 // `Null` struct is a simple representation of the `null` value in GURA.
 pub struct Null {}

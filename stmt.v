@@ -480,8 +480,7 @@ fn pair(mut gp GuraParser) ?RuleResult {
 			}
 
 			return new_match_result_with_value(.pair, [any_key, object_values,
-				Any(current_identation_level),
-			])
+				Any(current_identation_level)])
 		}
 
 		// Prevents issues with indentation inside a list that break objects
@@ -499,8 +498,7 @@ fn pair(mut gp GuraParser) ?RuleResult {
 		}
 
 		return new_match_result_with_value(.pair, [any_key, result.value,
-			Any(current_identation_level),
-		])
+			Any(current_identation_level)])
 	} else {
 		if err is none {
 			return new_parse_error(gp.pos + 1, gp.line, 'invalid pair')
@@ -657,7 +655,7 @@ fn basic_string(mut gp GuraParser) ?RuleResult {
 					chars << char_value
 				} else {
 					// get escaped char
-					chars << escape_sequences[escape] or { char }
+					chars << escape_sequences[escape] or { '$char$escape' }
 				}
 			}
 		} else {
