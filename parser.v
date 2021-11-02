@@ -122,7 +122,7 @@ fn (mut p Parser) maybe_keyword(keywords ...string) ?string {
 
 fn (mut p GuraParser) match_rule(rules ...Rule) ?RuleResult {
 	mut last_error_pos := -1
-	mut last_error := IError(voidptr(0))
+	mut last_error := IError(none)
 	mut last_error_rules := []Rule{}
 
 	for rule in rules {
@@ -136,7 +136,7 @@ fn (mut p GuraParser) match_rule(rules ...Rule) ?RuleResult {
 			if err is ParseError {
 				p.pos = init_pos
 				if err.pos > last_error_pos {
-					last_error = err
+					last_error = *err
 					last_error_pos = err.pos
 					last_error_rules = [rule]
 				} else {

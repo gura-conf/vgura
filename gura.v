@@ -118,7 +118,7 @@ fn (mut gp GuraParser) get_var_name() ?string {
 // get_var_value gets a variable value for a specific key from defined variables in file or as environment variable
 fn (mut gp GuraParser) get_var_value(key string) ?Any {
 	if key in gp.variables {
-		return gp.variables[key]
+		return gp.variables[key] or { return none }
 	}
 
 	env := os.environ()
