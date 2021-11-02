@@ -21,7 +21,7 @@ pub fn raw_encode(data map[string]Any) string {
 pub fn parse<T>(src string) ?T {
 	res := raw_parse(src) ?
 	mut typ := T{}
-	// typ.from_gura(res)
+	typ.from_gura(res)
 	return typ
 }
 
