@@ -596,13 +596,13 @@ fn number(mut gp GuraParser) ?RuleResult {
 	}
 
 	if number_type == 'int' {
-                if _ := strconv.parse_int(number, 0, 0) {
-                        return new_match_result_with_value(.primitive, number.int())
-                }
-                return new_parse_error(gp.pos + 1, gp.line, '${number} is not a number')
+		if _ := strconv.parse_int(number, 0, 0) {
+			return new_match_result_with_value(.primitive, number.int())
+		}
+		return new_parse_error(gp.pos + 1, gp.line, '$number is not a number')
 	}
 
-        return new_match_result_with_value(.primitive, number.f64())
+	return new_match_result_with_value(.primitive, number.f64())
 }
 
 // basic_string matches with a simple / multiline basic string
