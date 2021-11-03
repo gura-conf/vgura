@@ -106,12 +106,12 @@ fn (mut p Parser) keyword(keywords ...string) ?string {
 
 		if p.text[low..high] == keyword {
 			p.pos += keyword.len
-			debug('Keyword $keyword matched')
+			debug('Keyword $keyword.runes() matched')
 			return keyword
 		}
 	}
 
-	return new_parse_error(p.pos + 1, p.line, 'Expected ${keywords.join(',')} but got ${p.text[
+	return new_parse_error(p.pos + 1, p.line, 'Expected [${keywords.join(',')}] but got ${p.text.runes()[
 		p.pos + 1..p.pos + 2]}')
 }
 
