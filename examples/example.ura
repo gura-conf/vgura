@@ -84,6 +84,16 @@ tango_singers: [
         year_of_birth: 1914
 ]
 
+singers: [
+    name: "Carlos"
+    surname: "Gardel"
+    year_of_birth: 1890,
+
+    name: "Aníbal"
+    surname: "Troilo"
+    year_of_birth: 1914
+]
+
 integers2: [
   1, 2, 3
 ]
