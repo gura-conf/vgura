@@ -7,9 +7,9 @@ import strconv
 fn new_line(mut gp GuraParser) ?RuleResult {
 	rule_debug(@FN)
 
-	char := gp.char('\f\v\r\n') ?
+	char_str := gp.char('\f\v\r\n') ?
 	gp.line++
-	return Any(char)
+	return Any(char_str)
 }
 
 // comment matches with a comment
@@ -18,9 +18,9 @@ fn comment(mut gp GuraParser) ?RuleResult {
 
 	gp.keyword('#') ?
 	for gp.pos < gp.len {
-		char := gp.text[gp.pos + 1..gp.pos + 2]
+		char_str := gp.text[gp.pos + 1..gp.pos + 2]
 		gp.pos++
-		if '\f\v\r\n'.contains(char) {
+		if '\f\v\r\n'.contains(char_str) {
 			gp.line++
 			break
 		}
@@ -123,19 +123,19 @@ fn quoted_string_with_var(mut gp GuraParser) ?RuleResult {
 	mut chars := []string{}
 
 	for {
-		char := gp.char('') ?
-		if char == quote {
+		char_str := gp.char('') ?
+		if char_str == quote {
 			break
 		}
 
 		// computes variables values in string
-		if char == '$' {
+		if char_str == '$' {
 			var_name := gp.get_var_name() ?
 			chars << gp.get_var_value(var_name) ? as string
 			continue
 		}
 
-		chars << char
+		chars << char_str
 	}
 
 	return Any(chars.join(''))
@@ -538,8 +538,8 @@ fn boolean(mut gp GuraParser) ?RuleResult {
 fn unquoted_string(mut gp GuraParser) ?RuleResult {
 	rule_debug(@FN)
 
-	char := gp.char(key_acceptable_chars) ?
-	mut chars := [char]
+	char_str := gp.char(key_acceptable_chars) ?
+	mut chars := [char_str]
 
 	for {
 		if other_char := gp.maybe_char(key_acceptable_chars) {
@@ -562,8 +562,8 @@ fn number(mut gp GuraParser) ?RuleResult {
 
 	mut number_type := 'int'
 
-	char := gp.char(number_acceptable_chars) ?
-	mut chars := [char]
+	char_str := gp.char(number_acceptable_chars) ?
+	mut chars := [char_str]
 
 	for {
 		if other_char := gp.maybe_char(number_acceptable_chars) {
@@ -634,9 +634,9 @@ fn basic_string(mut gp GuraParser) ?RuleResult {
 			}
 		}
 
-		mut char := gp.char('') ?
+		mut char_str := gp.char('') ?
 
-		if char == '\\' {
+		if char_str == '\\' {
 			escape := gp.char('') ?
 
 			// check backslash followed by a newline to trim all whitespaces
@@ -658,16 +658,16 @@ fn basic_string(mut gp GuraParser) ?RuleResult {
 					chars << char_value
 				} else {
 					// get escaped char
-					chars << escape_sequences[escape] or { '$char$escape' }
+					chars << escape_sequences[escape] or { '$char_str$escape' }
 				}
 			}
 		} else {
 			// computes variables values in string
-			if char == '$' {
+			if char_str == '$' {
 				var_name := gp.get_var_name() ?
 				chars << gp.get_var_value(var_name) ? as string
 			} else {
-				chars << char
+				chars << char_str
 			}
 		}
 	}
@@ -705,8 +705,8 @@ fn literal_string(mut gp GuraParser) ?RuleResult {
 			}
 		}
 
-		char := gp.char('') ?
-		chars << char
+		char_str := gp.char('') ?
+		chars << char_str
 	}
 
 	return new_match_result_with_value(.primitive, chars.join(''))
