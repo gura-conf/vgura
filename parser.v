@@ -1,6 +1,6 @@
 module gura
 
-import math.util
+import math
 
 // Base parser
 struct Parser {
@@ -155,7 +155,7 @@ fn (mut p GuraParser) match_rule(rules ...Rule) ?RuleResult {
 		return last_error
 	}
 
-	last_error_pos = util.imin(p.text.len - 1, last_error_pos)
+	last_error_pos = math.min(p.text.len - 1, last_error_pos)
 	return new_parse_error(last_error_pos, p.line, 'Expected $last_error_rules.str() but got ${p.text[last_error_pos]}')
 }
 
