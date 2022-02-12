@@ -1,10 +1,10 @@
 module gura
 
 pub struct ParseError {
+	Error
 pub:
-	code int
-	line int
 	msg  string
+	line int
 	pos  int
 }
 
@@ -12,8 +12,12 @@ fn new_parse_error(pos int, line int, msg string) IError {
 	return &ParseError{
 		pos: pos
 		line: line
-		msg: '$msg at line $line position $pos'
+		msg: msg
 	}
+}
+
+pub fn (err &ParseError) msg() string {
+	return '$err.msg at line $err.line position $err.pos'
 }
 
 fn check_parse_error(err IError) ?RuleResult {
@@ -25,9 +29,9 @@ fn check_parse_error(err IError) ?RuleResult {
 }
 
 pub struct DuplicatedImportError {
+	Error
 pub:
-	code int
-	msg  string
+	msg string
 }
 
 fn new_duplicated_variable_error(msg string) IError {
@@ -36,10 +40,14 @@ fn new_duplicated_variable_error(msg string) IError {
 	}
 }
 
+pub fn (err &DuplicatedImportError) msg() string {
+	return err.msg
+}
+
 pub struct DuplicatedVariableError {
+	Error
 pub:
-	code int
-	msg  string
+	msg string
 }
 
 fn new_duplicated_import_error(msg string) IError {
@@ -48,10 +56,14 @@ fn new_duplicated_import_error(msg string) IError {
 	}
 }
 
+pub fn (err &DuplicatedVariableError) msg() string {
+	return err.msg
+}
+
 pub struct FileNotFoundError {
+	Error
 pub:
-	code int
-	msg  string
+	msg string
 }
 
 fn new_file_not_found_error(msg string) IError {
@@ -60,10 +72,14 @@ fn new_file_not_found_error(msg string) IError {
 	}
 }
 
+pub fn (err &FileNotFoundError) msg() string {
+	return err.msg
+}
+
 pub struct InvalidIndentationError {
+	Error
 pub:
-	code int
-	msg  string
+	msg string
 }
 
 fn new_invalid_indentation_error(msg string) IError {
@@ -72,11 +88,15 @@ fn new_invalid_indentation_error(msg string) IError {
 	}
 }
 
+pub fn (err &InvalidIndentationError) msg() string {
+	return err.msg
+}
+
 pub struct VariableNotDefinedError {
+	Error
 pub:
-	code int
-	key  string
-	msg  string
+	key string
+	msg string
 }
 
 fn new_variable_not_defined_error(key string, msg string) IError {
@@ -84,4 +104,8 @@ fn new_variable_not_defined_error(key string, msg string) IError {
 		key: key
 		msg: msg
 	}
+}
+
+pub fn (err &VariableNotDefinedError) msg() string {
+	return err.msg
 }
