@@ -10,8 +10,8 @@
 
 <div align="center">
 
-[![Build Status][workflowbadge]][workflowurl]
-[![Docs Validation][validatedocsbadge]][validatedocsurl]
+[![Continuous Integration][workflowbadge]][workflowurl]
+[![Deploy Documentation][deploydocsbadge]][deploydocsurl]
 [![License: MIT][licensebadge]][licenseurl]
 
 </div>
@@ -61,9 +61,9 @@ $ ./bin/test # execute `./bin/test -h` to know more about the test command
 
 Made with [contributors-img](https://contrib.rocks).
 
-[workflowbadge]: https://github.com/gura-conf/vgura/workflows/Build%20and%20Test%20with%20deps/badge.svg
-[validatedocsbadge]: https://github.com/gura-conf/vgura/workflows/Validate%20Docs/badge.svg
+[workflowbadge]: https://github.com/gura-conf/vgura/actions/workflows/ci.yml/badge.svg
+[deploydocsbadge]: https://github.com/gura-conf/vgura/actions/workflows/deploy-docs.yml/badge.svg
 [licensebadge]: https://img.shields.io/badge/License-MIT-blue.svg
-[workflowurl]: https://github.com/gura-conf/vgura/commits/main
-[validatedocsurl]: https://github.com/gura-conf/vgura/commits/main
+[workflowurl]: https://github.com/gura-conf/vgura/actions/workflows/ci.yml
+[deploydocsurl]: https://github.com/gura-conf/vgura/actions/workflows/deploy-docs.yml
 [licenseurl]: https://github.com/gura-conf/vgura/blob/main/LICENSE

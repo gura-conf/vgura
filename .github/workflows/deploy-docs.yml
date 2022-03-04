@@ -1,33 +1,33 @@
-name: Deploy Docs
+name: Deploy Documentation
 
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
-  ubuntu:
+  deploy-docs:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Latest V
-        uses: actions/checkout@v2
-        with:
-          repository: vlang/v
-      - name: Checkout vgura
+      - name: Checkout VSL
         uses: actions/checkout@v2
         with:
           path: gura
-      - name: Build V
-        run: |
-          make
-          sudo ./v symlink
+
+      - name: Setup V
+        uses: vlang/setup-v@v1
+        with:
+          check-latest: true
+
       - name: V doctor
         run: v doctor
+
       - name: Build docs
         run: |
           rm -f ./gura/README.md
           mv ./gura/static/DOCS.md ./gura/README.md
-          v doc -m -f html gura/
+          v doc -m -f html ./gura
           mv ./gura/_docs/gura.html ./gura/_docs/index.html
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
