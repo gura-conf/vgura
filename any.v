@@ -8,7 +8,6 @@ pub const (
 pub type Any = Null
 	| []Any
 	| bool
-	| u8
 	| f32
 	| f64
 	| i16
@@ -20,6 +19,7 @@ pub type Any = Null
 	| u16
 	| u32
 	| u64
+	| u8
 
 // `Null` struct is a simple representation of the `null` value in GURA.
 pub struct Null {}
@@ -240,7 +240,7 @@ fn (value Any) str_with_indentation(indentation_level int) string {
 		string {
 			'"$value"'
 		}
-                u8 {
+		u8 {
 			value.str()
 		}
 		u16 {
