@@ -17,7 +17,7 @@ fn new_parse_error(pos int, line int, msg string) IError {
 }
 
 pub fn (err &ParseError) msg() string {
-	return '$err.msg at line $err.line position $err.pos'
+	return '$err.msg() at line $err.line position $err.pos'
 }
 
 fn check_parse_error(err IError) ?RuleResult {
@@ -41,7 +41,7 @@ fn new_duplicated_variable_error(msg string) IError {
 }
 
 pub fn (err &DuplicatedImportError) msg() string {
-	return err.msg
+	return err.msg()
 }
 
 pub struct DuplicatedVariableError {
@@ -57,7 +57,7 @@ fn new_duplicated_import_error(msg string) IError {
 }
 
 pub fn (err &DuplicatedVariableError) msg() string {
-	return err.msg
+	return err.msg()
 }
 
 pub struct FileNotFoundError {
@@ -73,7 +73,7 @@ fn new_file_not_found_error(msg string) IError {
 }
 
 pub fn (err &FileNotFoundError) msg() string {
-	return err.msg
+	return err.msg()
 }
 
 pub struct InvalidIndentationError {
@@ -89,7 +89,7 @@ fn new_invalid_indentation_error(msg string) IError {
 }
 
 pub fn (err &InvalidIndentationError) msg() string {
-	return err.msg
+	return err.msg()
 }
 
 pub struct VariableNotDefinedError {
@@ -107,5 +107,5 @@ fn new_variable_not_defined_error(key string, msg string) IError {
 }
 
 pub fn (err &VariableNotDefinedError) msg() string {
-	return err.msg
+	return err.msg()
 }

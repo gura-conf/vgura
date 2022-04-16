@@ -8,7 +8,7 @@ pub const (
 pub type Any = Null
 	| []Any
 	| bool
-	| byte
+	| u8
 	| f32
 	| f64
 	| i16
@@ -219,9 +219,6 @@ fn (value Any) str_with_indentation(indentation_level int) string {
 		bool {
 			value.str()
 		}
-		byte {
-			value.str()
-		}
 		f32 {
 			value.str()
 		}
@@ -242,6 +239,9 @@ fn (value Any) str_with_indentation(indentation_level int) string {
 		}
 		string {
 			'"$value"'
+		}
+                u8 {
+			value.str()
 		}
 		u16 {
 			value.str()

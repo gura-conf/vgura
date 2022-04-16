@@ -132,7 +132,7 @@ fn (mut p GuraParser) match_rule(rules ...Rule) ?RuleResult {
 			match_rule_debug(true, '$res')
 			return res
 		} else {
-			match_rule_debug(false, err.msg)
+			match_rule_debug(false, err.msg())
 			if err is ParseError {
 				p.pos = init_pos
 				if err.pos > last_error_pos {
