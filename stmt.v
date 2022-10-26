@@ -7,7 +7,7 @@ import strconv
 fn new_line(mut gp GuraParser) ?RuleResult {
 	rule_debug(@FN)
 
-	char_str := gp.char('\f\v\r\n') ?
+	char_str := gp.char('\f\v\r\n')?
 	gp.line++
 	return Any(char_str)
 }
@@ -16,7 +16,7 @@ fn new_line(mut gp GuraParser) ?RuleResult {
 fn comment(mut gp GuraParser) ?RuleResult {
 	rule_debug(@FN)
 
-	gp.keyword('#') ?
+	gp.keyword('#')?
 	for gp.pos < gp.len {
 		char_str := gp.text[gp.pos + 1..gp.pos + 2]
 		gp.pos++
@@ -99,11 +99,11 @@ fn eat_ws_and_new_lines(mut gp GuraParser) ?RuleResult {
 fn gura_import(mut gp GuraParser) ?RuleResult {
 	rule_debug(@FN)
 
-	gp.keyword('import') ?
-	gp.char(' ') ?
-	match_result := gp.match_rule(quoted_string_with_var) ?
+	gp.keyword('import')?
+	gp.char(' ')?
+	match_result := gp.match_rule(quoted_string_with_var)?
 	file_to_import := match_result as Any
-	gp.match_rule(ws) ?
+	gp.match_rule(ws)?
 	if _ := gp.maybe_match(new_line) {
 		// ignore this case for now
 	} else {
@@ -119,19 +119,19 @@ fn gura_import(mut gp GuraParser) ?RuleResult {
 fn quoted_string_with_var(mut gp GuraParser) ?RuleResult {
 	rule_debug(@FN)
 
-	quote := gp.keyword(single_line_quote) ?
+	quote := gp.keyword(single_line_quote)?
 	mut chars := []string{}
 
 	for {
-		char_str := gp.char('') ?
+		char_str := gp.char('')?
 		if char_str == quote {
 			break
 		}
 
 		// computes variables values in string
 		if char_str == '$' {
-			var_name := gp.get_var_name() ?
-			chars << gp.get_var_value(var_name) ? as string
+			var_name := gp.get_var_name()?
+			chars << gp.get_var_value(var_name)? as string
 			continue
 		}
 
@@ -182,10 +182,10 @@ fn complex_type(mut gp GuraParser) ?RuleResult {
 fn variable_value(mut gp GuraParser) ?RuleResult {
 	rule_debug(@FN)
 
-	gp.keyword('$') ?
-	match_result := gp.match_rule(unquoted_string) ?
+	gp.keyword('$')?
+	match_result := gp.match_rule(unquoted_string)?
 	key := match_result as Any as string
-	value := gp.get_var_value(key) ?
+	value := gp.get_var_value(key)?
 	return new_match_result_with_value(.primitive, value)
 }
 
@@ -193,8 +193,8 @@ fn variable_value(mut gp GuraParser) ?RuleResult {
 fn variable(mut gp GuraParser) ?RuleResult {
 	rule_debug(@FN)
 
-	gp.keyword('$') ?
-	match_result := gp.match_rule(key) ?
+	gp.keyword('$')?
+	match_result := gp.match_rule(key)?
 	matched_key := match_result as Any as string
 
 	if _ := gp.maybe_match(ws) {
@@ -205,7 +205,7 @@ fn variable(mut gp GuraParser) ?RuleResult {
 		}
 	}
 
-	res := gp.match_rule(basic_string, literal_string, number, variable_value) ?
+	res := gp.match_rule(basic_string, literal_string, number, variable_value)?
 	result := res as MatchResult
 
 	if matched_key in gp.variables {
@@ -231,7 +231,7 @@ fn list(mut gp GuraParser) ?RuleResult {
 		}
 	}
 
-	gp.keyword('[') ?
+	gp.keyword('[')?
 
 	for {
 		// discards useless lines between elements of array
@@ -298,7 +298,7 @@ fn list(mut gp GuraParser) ?RuleResult {
 			return err
 		}
 	}
-	gp.keyword(']') ?
+	gp.keyword(']')?
 	return new_match_result_with_value(.list, result)
 }
 
@@ -306,7 +306,7 @@ fn list(mut gp GuraParser) ?RuleResult {
 fn useless_line(mut gp GuraParser) ?RuleResult {
 	rule_debug(@FN)
 
-	gp.match_rule(ws) ?
+	gp.match_rule(ws)?
 	mut is_comment := false
 	if _ := gp.maybe_match(comment) {
 		is_comment = true
@@ -392,7 +392,7 @@ fn key(mut gp GuraParser) ?RuleResult {
 	rule_debug(@FN)
 
 	if matched_key := gp.match_rule(unquoted_string) {
-		gp.keyword(':') ?
+		gp.keyword(':')?
 		return matched_key
 	} else {
 		if err is none {
@@ -409,10 +409,10 @@ fn pair(mut gp GuraParser) ?RuleResult {
 
 	pos_before_pair := gp.pos
 
-	indentation_match := gp.maybe_match(ws_with_indentation) ?
+	indentation_match := gp.maybe_match(ws_with_indentation)?
 	current_identation_level := indentation_match as Any as int
 
-	key_result := gp.match_rule(key) ?
+	key_result := gp.match_rule(key)?
 	any_key := key_result as Any
 	key_str := any_key as string
 
@@ -514,7 +514,7 @@ fn pair(mut gp GuraParser) ?RuleResult {
 fn null_stmt(mut gp GuraParser) ?RuleResult {
 	rule_debug(@FN)
 
-	gp.keyword('null') ?
+	gp.keyword('null')?
 	return new_match_result_with_value(.primitive, null)
 }
 
@@ -522,7 +522,7 @@ fn null_stmt(mut gp GuraParser) ?RuleResult {
 fn empty(mut gp GuraParser) ?RuleResult {
 	rule_debug(@FN)
 
-	gp.keyword('empty') ?
+	gp.keyword('empty')?
 	return new_match_result_with_value(.primitive, map[string]Any{})
 }
 
@@ -530,7 +530,7 @@ fn empty(mut gp GuraParser) ?RuleResult {
 fn boolean(mut gp GuraParser) ?RuleResult {
 	rule_debug(@FN)
 
-	boolean_key := gp.keyword('true', 'false') ?
+	boolean_key := gp.keyword('true', 'false')?
 	return new_match_result_with_value(.primitive, boolean_key == 'true')
 }
 
@@ -538,7 +538,7 @@ fn boolean(mut gp GuraParser) ?RuleResult {
 fn unquoted_string(mut gp GuraParser) ?RuleResult {
 	rule_debug(@FN)
 
-	char_str := gp.char(key_acceptable_chars) ?
+	char_str := gp.char(key_acceptable_chars)?
 	mut chars := [char_str]
 
 	for {
@@ -562,7 +562,7 @@ fn number(mut gp GuraParser) ?RuleResult {
 
 	mut number_type := 'int'
 
-	char_str := gp.char(number_acceptable_chars) ?
+	char_str := gp.char(number_acceptable_chars)?
 	mut chars := [char_str]
 
 	for {
@@ -608,7 +608,7 @@ fn number(mut gp GuraParser) ?RuleResult {
 // basic_string matches with a simple / multiline basic string
 fn basic_string(mut gp GuraParser) ?RuleResult {
 	rule_debug(@FN)
-	quote := gp.keyword(multiline_quote, single_line_quote) ?
+	quote := gp.keyword(multiline_quote, single_line_quote)?
 	is_multiline := quote == multiline_quote
 
 	// NOTE: A newline immediately following the opening delimiter will be trimmed. All other whitespace and
@@ -634,14 +634,14 @@ fn basic_string(mut gp GuraParser) ?RuleResult {
 			}
 		}
 
-		mut char_str := gp.char('') ?
+		mut char_str := gp.char('')?
 
 		if char_str == '\\' {
-			escape := gp.char('') ?
+			escape := gp.char('')?
 
 			// check backslash followed by a newline to trim all whitespaces
 			if is_multiline && escape == '\n' {
-				eat_ws_and_new_lines(mut gp) ?
+				eat_ws_and_new_lines(mut gp)?
 			} else {
 				// supports unicode of 16 and 32 bits representation
 				if escape == 'u' || escape == 'U' {
@@ -649,10 +649,10 @@ fn basic_string(mut gp GuraParser) ?RuleResult {
 					mut code_point := []string{}
 
 					for _ in 0 .. num_chars_code_point {
-						code_point_char := gp.char('0-9a-fA-F') ?
+						code_point_char := gp.char('0-9a-fA-F')?
 						code_point << code_point_char
 					}
-					hex_value := strconv.parse_int(code_point.join(''), 16, 0) ?
+					hex_value := strconv.parse_int(code_point.join(''), 16, 0) or { return err }
 					// @todo: String.fromCharCode(hexValue) // converts from UNICODE to string
 					char_value := hex_value.str()
 					chars << char_value
@@ -664,8 +664,8 @@ fn basic_string(mut gp GuraParser) ?RuleResult {
 		} else {
 			// computes variables values in string
 			if char_str == '$' {
-				var_name := gp.get_var_name() ?
-				chars << gp.get_var_value(var_name) ? as string
+				var_name := gp.get_var_name()?
+				chars << gp.get_var_value(var_name)? as string
 			} else {
 				chars << char_str
 			}
@@ -679,7 +679,7 @@ fn basic_string(mut gp GuraParser) ?RuleResult {
 fn literal_string(mut gp GuraParser) ?RuleResult {
 	rule_debug(@FN)
 
-	quote := gp.keyword(multiline_quote, single_line_quote) ?
+	quote := gp.keyword(multiline_quote, single_line_quote)?
 	is_multiline := quote == multiline_quote
 
 	// NOTE: A newline immediately following the opening delimiter will be trimmed. All other whitespace and
@@ -705,7 +705,7 @@ fn literal_string(mut gp GuraParser) ?RuleResult {
 			}
 		}
 
-		char_str := gp.char('') ?
+		char_str := gp.char('')?
 		chars << char_str
 	}
 

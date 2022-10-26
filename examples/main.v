@@ -51,21 +51,22 @@ pub fn (p Config) to_gura() map[string]gura.Any {
 
 fn example() ? {
 	file_path := os.join_path(@VMODROOT, 'examples', 'example.ura')
-	gura_str := os.read_file(file_path) ?
+	gura_str := os.read_file(file_path) or { return err }
 
-	d := gura.raw_parse(gura_str) ?
+	d := gura.raw_parse(gura_str)?
+	nginx_host := d.value('services.local_nginx.host')?
 	println('Parser finished successfully')
 	println('d.str():')
 	println(d)
 	println('')
 	println('')
-	println('Nginx HOST: ${d.value('services.local_nginx.host') ?}')
+	println('Nginx HOST: $nginx_host')
 	println('')
 	println(d.to_json())
 	println('raw_encode(d):')
 	println(gura.raw_encode(d))
 
-	config := gura.parse<Config>(gura_str) ?
+	config := gura.parse<Config>(gura_str)?
 	println('Parser finished successfully')
 	println('config.str():')
 	println(config)

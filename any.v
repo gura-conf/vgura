@@ -206,7 +206,13 @@ pub fn (f Any) bool() bool {
 fn (value Any) str_with_indentation(indentation_level int) string {
 	return match value {
 		[]Any {
-			'[${value.map(it.str_with_indentation(indentation_level)).join(', ')}]'
+			mut ret := '['
+			for i, v in value {
+				ret += '${v.str_with_indentation(indentation_level)},'
+			}
+			ret = ret.trim_right(',')
+			ret += ']'
+			ret
 		}
 		map[string]Any {
 			if value.len == 0 {

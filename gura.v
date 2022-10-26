@@ -39,7 +39,7 @@ fn (mut gp GuraParser) parse(text string) ?map[string]Any {
 // get_text_with_imports gets final text taking in consideration imports in original text
 fn (mut gp GuraParser) get_text_with_imports(original_text string, parent_dir_path string) ?string {
 	gp.init(original_text)
-	gp.compute_imports(parent_dir_path) ?
+	gp.compute_imports(parent_dir_path)?
 	return gp.text
 }
 
@@ -83,10 +83,10 @@ fn (mut gp GuraParser) compute_imports(parent_dir_path string) ? {
 			return new_file_not_found_error('file $file_path does not exists')
 		}
 
-		content := os.read_file(file_path) ?
+		content := os.read_file(file_path) or { return err }
 		mut aux_parser := GuraParser{}
 		next_parent_dir_path := os.dir(file_path)
-		content_with_imports := aux_parser.get_text_with_imports(content, next_parent_dir_path) ?
+		content_with_imports := aux_parser.get_text_with_imports(content, next_parent_dir_path)?
 
 		final_content += '$content_with_imports\n'
 
@@ -130,12 +130,12 @@ fn (mut gp GuraParser) get_var_value(key string) ?Any {
 }
 
 fn (mut gp GuraParser) run() ?map[string]Any {
-	gp.compute_imports('') ?
+	gp.compute_imports('')?
 	debug('Parser starting . . .')
-	result := gp.match_rule(expression) ?
+	result := gp.match_rule(expression)?
 	debug('Parser finished')
 	debug('Executing last `eat_ws_and_new_lines` . . .')
-	eat_ws_and_new_lines(mut gp) ?
+	eat_ws_and_new_lines(mut gp)?
 	debug('`eat_ws_and_new_lines` finished')
 	// expression result as .value of type `[]Any` and a map[string]Any at possition `0`
 	match_result := result as MatchResult

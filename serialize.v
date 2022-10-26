@@ -19,7 +19,7 @@ pub fn raw_encode(data map[string]Any) string {
 
 // parse is a generic function that parses a gura string into the target type.
 pub fn parse<T>(src string) ?T {
-	res := raw_parse(src) ?
+	res := raw_parse(src)?
 	mut typ := T{}
 	typ.from_gura(res)
 	return typ
